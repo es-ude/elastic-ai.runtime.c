@@ -2,7 +2,7 @@
 
 cd build
 
-cmake -DTARGET_GROUP=production .
+cmake -DTARGET_GROUP=production ..
 
 make all
 

@@ -2,7 +2,7 @@
 
 cd build
 
-cmake -DTARGET_GROUP=test .
+cmake -DTARGET_GROUP=test ..
 
 make all
 
