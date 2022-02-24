@@ -1,7 +1,3 @@
-add_executable(test_meh_app test_meh.c)
-target_link_libraries(test_meh_app unity)
-add_test(NAME test_meh COMMAND test_meh_app)
-
 add_executable(test_publishSubscribe test_publishSubscribe.c)
-target_link_libraries(test_publishSubscribe unity)
+target_link_libraries(test_publishSubscribe unity broker)
 add_test(NAME test_publishSubscribe COMMAND test_publishSubscribe)
