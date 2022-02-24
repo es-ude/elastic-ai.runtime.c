@@ -1,5 +1,13 @@
 # CMake Unity Example Project
 
+## Shell Scripts
+
+Initial setup of the project: `setup.sh`
+
+Build and run tests: `test.sh`
+
+Build and run release target: `build_and_run.sh`
+
 ## Setup 
 
 ```bash
