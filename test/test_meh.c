@@ -13,6 +13,7 @@ void test_shouldFail(void)
 	TEST_FAIL();
 }
 
+
 void test_shouldPass(void)
 {
 	TEST_PASS();
