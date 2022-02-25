@@ -10,7 +10,6 @@ void subscribe(Subscription_t subscription) {
     numberSubscribe++;
 }
 
-void publish(char* topic, uint32_t topic_length, uint32_t data){
+void publish(char *topic, uint32_t topic_length, uint32_t data) {
     subscriberList[0].callback_fct(topic, topic_length, 4);
 }
-

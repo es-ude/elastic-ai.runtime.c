@@ -1,11 +1,11 @@
 #! /bin/bash
 
-cd build
+(
+  cd build || exit
 
-cmake -DTARGET_GROUP=production ..
+  cmake -DTARGET_GROUP=production ..
 
-make all
+  make all
 
-./bin/release
-
-cd ..
+  ./bin/release
+)
