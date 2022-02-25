@@ -14,14 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: CMAKE
-        working-directory: ${{github.workspace}}/build
-        run: cmake -DTARGET_GROUP=test ..
-
-      - name: Make all
-        working-directory: ${{github.workspace}}/build
-        run: make all
+      - name: Setup
+        run: bash setup.sh
 
       - name: Test
-        working-directory: ${{github.workspace}}/build
-        run: make test
+        run: bash test.sh
