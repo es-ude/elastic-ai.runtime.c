@@ -17,5 +17,17 @@ jobs:
       - name: Setup
         run: bash setup.sh
 
-      - name: Test
-        run: bash test.sh
+      - name: mkdir build
+        run: mkdir build
+
+      - name: CMAKE
+        working-directory: ${{github.workspace}}/build
+        run: cmake -DTARGET_GROUP=test ..
+
+      - name: Make all
+        working-directory: ${{github.workspace}}/build
+        run: make all
+
+      - name: Run tests
+        working-directory: ${{github.workspace}}/build
+        run: make test
