@@ -1,3 +1,7 @@
-add_executable(test_publishSubscribe test_publishSubscribe.c)
-target_link_libraries(test_publishSubscribe unity broker)
-add_test(NAME test_publishSubscribe COMMAND test_publishSubscribe)
+add_executable(test_protocolTest test_protocolTest.c)
+target_link_libraries(test_protocolTest unity)
+add_test(NAME test_protocolTest COMMAND test_protocolTest)
+
+add_executable(test_postingTest test_postingTest.c)
+target_link_libraries(test_postingTest unity posting)
+add_test(NAME test_postingTest COMMAND test_postingTest)

@@ -7,6 +7,6 @@
 
   make all
 
-  make test
-  #ctest -V #To see printf output from tests
+  #make test
+  ctest -V #To see printf output from tests
 )
