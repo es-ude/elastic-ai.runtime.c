@@ -1,5 +1,7 @@
-add_executable(test_meh_app test_meh.c)
- 
-target_link_libraries(test_meh_app unity)
- 
-add_test(NAME test_meh COMMAND test_meh_app)
+add_executable(test_protocolTest test_protocolTest.c)
+target_link_libraries(test_protocolTest unity)
+add_test(NAME test_protocolTest COMMAND test_protocolTest)
+
+add_executable(test_postingTest test_postingTest.c)
+target_link_libraries(test_postingTest unity posting)
+add_test(NAME test_postingTest COMMAND test_postingTest)

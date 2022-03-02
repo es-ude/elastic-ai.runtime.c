@@ -1,11 +1,12 @@
 #! /bin/bash
 
-cd build
+(
+  cd build || exit
 
-cmake -DTARGET_GROUP=test ..
+  cmake -DTARGET_GROUP=test ..
 
-make all
+  make all
 
-make test
-
-cd ..
+  #make test
+  ctest -V #To see printf output from tests
+)
