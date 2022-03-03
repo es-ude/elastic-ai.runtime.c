@@ -1,6 +1,5 @@
 #include "../extern/unity/src/unity.h"
 #include "posting.h"
-#include "string.h"
 
 void setUp(void) {
 }

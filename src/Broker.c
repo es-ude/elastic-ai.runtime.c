@@ -1,7 +1,7 @@
+#include <string.h>
+#include <stdlib.h>
 #include "communicationEndpoint.h"
 #include "Broker.h"
-#include "string.h"
-#include "stdlib.h"
 
 int numberSubscriber = 0;
 char identifier[] = "eip://uni-due.de/es/";

@@ -5,7 +5,7 @@
 #include "subscriber.h"
 
 /*
- A MQTT Broker needs to implemented these functions
+ A MQTT Broker needs to implement these functions
  */
 
 void publish(Posting posting);

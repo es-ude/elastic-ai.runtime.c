@@ -1,7 +1,6 @@
 #include "../extern/unity/src/unity.h"
 #include <string.h>
 #include "communicationEndpoint.h"
-#include "Broker.h"
 #include "posting.h"
 #include "protocol.h"
 
