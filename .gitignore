@@ -36,5 +36,5 @@ _deps
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake,visualstudiocode
-
+cmake-build-debug
 build/
