@@ -1,15 +1,54 @@
-#include <stdint.h>
+#include "communicationEndpoint.h"
 #include "Broker.h"
+#include "string.h"
+#include "stdlib.h"
 
-int numberSubscribe = 0;
+int numberSubscriber = 0;
+char identifier[] = "eip://uni-due.de/es/";
 
-Subscription_t subscriberList[10];
+Subscription subscriberList[64];
 
-void subscribe(Subscription_t subscription) {
-    subscriberList[numberSubscribe] = subscription;
-    numberSubscribe++;
+char *addID(const char *topic) {
+    char *result = malloc(strlen(identifier) + strlen(topic) + 1);
+    strcpy(result, identifier);
+    strcat(result, topic);
+    return result;
 }
 
-void publish(char *topic, uint32_t topic_length, uint32_t data) {
-    subscriberList[0].callback_fct(topic, topic_length, 4);
+void publish(Posting posting) {
+    char *topic = addID(posting.topic);
+
+    for (int i = 0; i < numberSubscriber; ++i) {
+        if (strcmp(subscriberList[i].topic, topic) == 0) {
+            subscriberList[i].subscriber.deliver(posting);
+        }
+    }
+}
+
+void subscribe(char *topic, Subscriber subscriber) {
+    subscribeRaw(addID(topic), subscriber);
+}
+
+void unsubscribe(char *topic, Subscriber subscriber) {
+    unsubscribeRaw(addID(topic), subscriber);
+}
+
+void subscribeRaw(char *topic, Subscriber subscriber) {
+    subscriberList[numberSubscriber] = (Subscription) {.topic=topic, .subscriber=subscriber};
+    numberSubscriber++;
+}
+
+void unsubscribeRaw(char *topic, Subscriber subscriber) {
+    for (int i = 0; i < numberSubscriber; ++i) {
+        if (strcmp(subscriberList[i].topic, topic) == 0) {
+            if (subscriberList[i].subscriber.deliver == subscriber.deliver) {
+                //subscriberList[i].subscriber = (Subscriber) {.deliver=  };
+                strcpy(subscriberList[i].topic, "\0");
+            }
+        }
+    }
+}
+
+char *ID() {
+    return identifier;
 }

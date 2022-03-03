@@ -4,6 +4,10 @@
 #include "posting.h"
 #include "subscriber.h"
 
+/*
+ A MQTT Broker needs to implemented these functions
+ */
+
 void publish(Posting posting);
 
 void subscribe(char *topic, Subscriber subscriber);
