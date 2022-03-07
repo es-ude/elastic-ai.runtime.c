@@ -5,7 +5,6 @@
 
 int numberSubscriber = 0;
 char identifier[] = "eip://uni-due.de/es/";
-
 Subscription subscriberList[64];
 
 char *addID(const char *topic) {
@@ -42,7 +41,6 @@ void unsubscribeRaw(char *topic, Subscriber subscriber) {
     for (int i = 0; i < numberSubscriber; ++i) {
         if (strcmp(subscriberList[i].topic, topic) == 0) {
             if (subscriberList[i].subscriber.deliver == subscriber.deliver) {
-                //subscriberList[i].subscriber = (Subscriber) {.deliver=  };
                 strcpy(subscriberList[i].topic, "\0");
             }
         }
