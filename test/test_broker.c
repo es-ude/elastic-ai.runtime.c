@@ -1,4 +1,5 @@
 #include "../extern/unity/src/unity.h"
+#include <string.h>
 #include "posting.h"
 #include "subscriber.h"
 #include "communicationEndpoint.h"
@@ -14,9 +15,11 @@ void tearDown(void) {
 }
 
 void checkLastData(char *expected) {
-    printf("EXPECTED:%s\n", expected);
-    printf("ACTUAL:%s\n", lastDelivered);
-    TEST_ASSERT_EQUAL(expected, lastDelivered);
+    if (strcmp(expected, lastDelivered) != 0) {
+        printf("EXPECTED:%s\n", expected);
+        printf("ACTUAL:%s\n", lastDelivered);
+        TEST_FAIL();
+    }
 }
 
 void deliver(Posting posting) {
