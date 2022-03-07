@@ -16,11 +16,11 @@ void publishData(char *dataId, char *value) {
 }
 
 void subscribeForHeartbeat(char *heartbeatSource, Subscriber subscriber) {
-    subscribeRaw(addType(heartbeatSource, "HEARTBEAT"), subscriber);
+    subscribe(addType(heartbeatSource, "HEARTBEAT"), subscriber);
 }
 
 void unsubscribeFromHeartbeat(char *heartbeatSource, Subscriber subscriber) {
-    unsubscribeRaw(addType(heartbeatSource, "HEARTBEAT"), subscriber);
+    unsubscribe(addType(heartbeatSource, "HEARTBEAT"), subscriber);
 }
 
 void publishHeartbeat(char *who) {
@@ -66,5 +66,5 @@ void subscribeForLost(char *client, Subscriber subscriber) {
 }
 
 void unsubscribeFromLost(char *client, Subscriber subscriber) {
-    unsubscribeRaw(addType(client, "LOST"), subscriber);
+    unsubscribe(addType(client, "LOST"), subscriber);
 }
