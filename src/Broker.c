@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "communicationEndpoint.h"
 #include "Broker.h"
 
@@ -14,11 +15,46 @@ char *addID(const char *topic) {
     return result;
 }
 
+bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic) {
+    // Equal without wildcards
+    if (strcmp(subscribedTopic, publishedTopic) == 0) {
+        return true;
+    }
+    int subscribedIterator = 0;
+    int publishedIterator = 0;
+    // Iterates over both strings
+    while (publishedIterator < strlen(publishedTopic)) {
+        // Multilevel wildcard in subscribed topic reached
+        if (subscribedTopic[subscribedIterator] == '#') {
+            return true;
+        }
+        // If both characters are equal increase iterator for both
+        if (subscribedTopic[subscribedIterator] == publishedTopic[publishedIterator]) {
+            subscribedIterator++;
+            publishedIterator++;
+            // Check for single level wildcard if characters were not equal
+        } else if (subscribedTopic[subscribedIterator] == '+') {
+            publishedIterator++;
+            // When the published topic reaches slash, the single level wildcard is over
+            if (publishedTopic[publishedIterator] == '/') {
+                subscribedIterator++;
+            }
+        } else {
+            return false;
+        }
+    }
+    // If the subscribed topic has characters left
+    if (subscribedIterator < strlen(subscribedTopic) && subscribedTopic[subscribedIterator] != '+') {
+        return false;
+    }
+    return true;
+}
+
 void publish(Posting posting) {
     char *topic = addID(posting.topic);
 
     for (int i = 0; i < numberSubscriber; ++i) {
-        if (strcmp(subscriberList[i].topic, topic) == 0) {
+        if (checkIfTopicMatches(subscriberList[i].topic, topic)) {
             subscriberList[i].subscriber.deliver(posting);
         }
     }

@@ -1,7 +1,7 @@
 #ifndef ELASTIC_AI_RUNTIME_C_BROKER_H
 #define ELASTIC_AI_RUNTIME_C_BROKER_H
 
-#include <stdint.h>
+#include "subscriber.h"
 
 typedef struct Subscription {
     char *topic;
