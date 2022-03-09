@@ -30,13 +30,13 @@ void test_publishSubscribeForData(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForData("test0", sub);
-    subscribeForData("test1", sub);
+    subscribeForData("testSubData0", sub);
+    subscribeForData("testSubData1", sub);
 
-    publishData("test0", "testData0");
+    publishData("testSubData0", "testData0");
     checkLastData("testData0");
 
-    publishData("test1", "testData1");
+    publishData("testSubData1", "testData1");
     checkLastData("testData1");
 
     tearDown();
@@ -47,17 +47,17 @@ void test_publishUnsubscribeFromData(void) {
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
-    subscribeForData("test0", sub);
-    subscribeForData("test1", sub);
+    subscribeForData("testUnsubData0", sub);
+    subscribeForData("testUnsubData1", sub);
 
-    publishData("test0", "testData0");
+    publishData("testUnsubData0", "testData0");
     checkLastData("testData0");
 
-    publishData("test1", "testData1");
+    publishData("testUnsubData1", "testData1");
     checkLastData("testData1");
 
-    unsubscribeFromData("test0", sub);
-    publishData("test0", "testData0");
+    unsubscribeFromData("testUnsubData0", sub);
+    publishData("testUnsubData0", "testData0");
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     checkLastData("testData1");
 
@@ -68,13 +68,13 @@ void test_publishSubscribeForHeartbeat(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForHeartbeat("test0", sub);
-    subscribeForHeartbeat("test1", sub);
+    subscribeForHeartbeat("testSubHeart0", sub);
+    subscribeForHeartbeat("testSubHeart1", sub);
 
-    publishHeartbeat("test0");
-    checkLastData("test0");
-    publishHeartbeat("test1");
-    checkLastData("test1");
+    publishHeartbeat("testSubHeart0");
+    checkLastData("testSubHeart0");
+    publishHeartbeat("testSubHeart1");
+    checkLastData("testSubHeart1");
 
     tearDown();
 }
@@ -84,18 +84,18 @@ void test_publishUnsubscribeFromHeartbeat(void) {
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
-    subscribeForHeartbeat("test0", sub);
-    subscribeForHeartbeat("test1", sub);
+    subscribeForHeartbeat("testUnsubHeart0", sub);
+    subscribeForHeartbeat("testUnsubHeart1", sub);
 
-    publishHeartbeat("test0");
-    checkLastData("test0");
-    publishHeartbeat("test1");
-    checkLastData("test1");
+    publishHeartbeat("testUnsubHeart0");
+    checkLastData("testUnsubHeart0");
+    publishHeartbeat("testUnsubHeart1");
+    checkLastData("testUnsubHeart1");
 
-    unsubscribeFromHeartbeat("test0", sub);
-    publishHeartbeat("test0");
+    unsubscribeFromHeartbeat("testUnsubHeart0", sub);
+    publishHeartbeat("testUnsubHeart0");
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
-    checkLastData("test1");
+    checkLastData("testUnsubHeart1");
 
     tearDown();
 }
@@ -104,13 +104,13 @@ void test_subscribeForDataStartRequest(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForDataStartRequest("test0", sub);
-    subscribeForDataStartRequest("test1", sub);
+    subscribeForDataStartRequest("testSubDataStart0", sub);
+    subscribeForDataStartRequest("testSubDataStart1", sub);
 
-    publishDataStartRequest("test0", "testData0");
+    publishDataStartRequest("testSubDataStart0", "testData0");
     checkLastData("testData0");
 
-    publishDataStartRequest("test1", "testData1");
+    publishDataStartRequest("testSubDataStart1", "testData1");
     checkLastData("testData1");
 
     tearDown();
@@ -120,13 +120,13 @@ void test_subscribeForDataStopRequest(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForDataStopRequest("test0", sub);
-    subscribeForDataStopRequest("test1", sub);
+    subscribeForDataStopRequest("testSubDataStop0", sub);
+    subscribeForDataStopRequest("testSubDataStop1", sub);
 
-    publishDataStopRequest("test0", "testData0");
+    publishDataStopRequest("testSubDataStop0", "testData0");
     checkLastData("testData0");
 
-    publishDataStopRequest("test1", "testData1");
+    publishDataStopRequest("testSubDataStop1", "testData1");
     checkLastData("testData1");
 
     tearDown();
@@ -136,13 +136,13 @@ void test_publishCommand(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/test0", sub);
-    subscribe("SET/test1", sub);
+    subscribe("SET/testPubCmd0", sub);
+    subscribe("SET/testPubCmd1", sub);
 
-    publishCommand("test0", "0");
+    publishCommand("testPubCmd0", "0");
     checkLastData("0");
 
-    publishCommand("test1", "1");
+    publishCommand("testPubCmd1", "1");
     checkLastData("1");
 
     tearDown();
@@ -153,9 +153,9 @@ void test_publishOnCommand(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/test0", sub);
+    subscribe("SET/testPubOn0", sub);
 
-    publishOnCommand("test0");
+    publishOnCommand("testPubOn0");
     checkLastData("1");
 
     tearDown();
@@ -165,9 +165,9 @@ void test_publishOffCommand(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/test0", sub);
+    subscribe("SET/testPubOff0", sub);
 
-    publishOffCommand("test0");
+    publishOffCommand("testPubOff0");
     checkLastData("0");
 
     tearDown();
@@ -177,14 +177,14 @@ void test_subscribeForLost(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForLost("test0", sub);
-    subscribeForLost("test1", sub);
+    subscribeForLost("testSubLost0", sub);
+    subscribeForLost("testSubLost1", sub);
 
 
-    publish((Posting) {.topic="test0/LOST", .data="testData0"});
+    publish((Posting) {.topic="testSubLost0/LOST", .data="testData0"});
     checkLastData("testData0");
 
-    publish((Posting) {.topic="test1/LOST", .data="testData1"});
+    publish((Posting) {.topic="testSubLost1/LOST", .data="testData1"});
     checkLastData("testData1");
 
     tearDown();
@@ -195,17 +195,17 @@ void test_unsubscribeFromLost(void) {
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
-    subscribeForLost("test0", sub);
-    subscribeForLost("test1", sub);
+    subscribeForLost("testUnsubLost0", sub);
+    subscribeForLost("testUnsubLost1", sub);
 
-    publish((Posting) {.topic="test0/LOST", .data="testData0"});
+    publish((Posting) {.topic="testUnsubLost0/LOST", .data="testData0"});
     checkLastData("testData0");
 
-    publish((Posting) {.topic="test1/LOST", .data="testData1"});
+    publish((Posting) {.topic="testUnsubLost1/LOST", .data="testData1"});
     checkLastData("testData1");
 
-    unsubscribeFromLost("test0", sub);
-    publish((Posting) {.topic="test0/LOST", .data="testData0"});
+    unsubscribeFromLost("testUnsubLost0", sub);
+    publish((Posting) {.topic="testUnsubLost0/LOST", .data="testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     checkLastData("testData1");
 
