@@ -29,7 +29,7 @@ cmake -DTARGET_GROUP=test .
 ```
 
 ```bash
-make test
+ctest -V
 ```
 
 ## Build and Run Production
