@@ -16,38 +16,56 @@ char *addID(const char *topic) {
 }
 
 bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic) {
-    // Equal without wildcards
-    if (strcmp(subscribedTopic, publishedTopic) == 0) {
+    if (topicsAreEqual(subscribedTopic, publishedTopic)) {
         return true;
     }
     int subscribedIterator = 0;
     int publishedIterator = 0;
-    // Iterates over both strings
+
     while (publishedIterator < strlen(publishedTopic)) {
-        // Multilevel wildcard in subscribed topic reached
-        if (subscribedTopic[subscribedIterator] == '#') {
+        if (multilevelWildcardIn(subscribedTopic, subscribedIterator)) {
             return true;
         }
-        // If both characters are equal increase iterator for both
-        if (subscribedTopic[subscribedIterator] == publishedTopic[publishedIterator]) {
+        if (checkForEqualCharacterIn(subscribedTopic, publishedTopic, subscribedIterator, publishedIterator)) {
             subscribedIterator++;
             publishedIterator++;
-            // Check for single level wildcard if characters were not equal
-        } else if (subscribedTopic[subscribedIterator] == '+') {
+        } else if (checkForSingleLevelWildcardIn(subscribedTopic, subscribedIterator)) {
             publishedIterator++;
-            // When the published topic reaches slash, the single level wildcard is over
-            if (publishedTopic[publishedIterator] == '/') {
+            if (checkIfWildcardEndedIn(publishedTopic, publishedIterator)) {
                 subscribedIterator++;
             }
         } else {
             return false;
         }
     }
-    // If the subscribed topic has characters left
-    if (subscribedIterator < strlen(subscribedTopic) && subscribedTopic[subscribedIterator] != '+') {
+    if (subscribedTopicHasCharactersLeft(subscribedTopic, subscribedIterator)) {
         return false;
     }
     return true;
+}
+
+bool topicsAreEqual(char *subscribedTopic, char *publishedTopic) {
+    return strcmp(subscribedTopic, publishedTopic) == 0;
+}
+
+bool subscribedTopicHasCharactersLeft(char *subscribedTopic, int subscribedIterator) {
+    return subscribedIterator < strlen(subscribedTopic) && subscribedTopic[subscribedIterator] != '+';
+}
+
+bool multilevelWildcardIn(const char* subscribedTopic, int subscribedIterator) {
+    return subscribedTopic[subscribedIterator] == '#';
+}
+
+bool checkForEqualCharacterIn(const char *subscribedTopic, const char *publishedTopic, int subscribedIterator, int publishedIterator) {
+    return subscribedTopic[subscribedIterator] == publishedTopic[publishedIterator];
+}
+
+bool checkForSingleLevelWildcardIn(const char *subscribedTopic, int subscribedIterator) {
+    return subscribedTopic[subscribedIterator] == '+';
+}
+
+bool checkIfWildcardEndedIn(const char *publishedTopic, int publishedIterator) {
+    return publishedTopic[publishedIterator] == '/';
 }
 
 void publish(Posting posting) {
