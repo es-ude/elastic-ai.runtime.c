@@ -27,8 +27,6 @@ void deliver(Posting posting) {
 }
 
 void test_publishSubscribeRaw(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
     subscribe("testPublishSub0", sub);
     subscribe("testPublishSub1", sub);
@@ -38,13 +36,9 @@ void test_publishSubscribeRaw(void) {
 
     publish((Posting) {.topic="testPublishSub1", .data="testData1"});
     checkLastData("testData1");
-
-    tearDown();
 }
 
 void test_publishUnsubscribeRaw(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
     subscribe("testPublishUnsub0", sub);
     subscribe("testPublishUnsub1", sub);
@@ -59,13 +53,9 @@ void test_publishUnsubscribeRaw(void) {
     publish((Posting) {.topic="testPublishUnsub0", .data="testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     checkLastData("testData1");
-
-    tearDown();
 }
 
 void test_singleLevelWildcard(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
     subscribe("testSingleLeveLSub0/+/test", sub);
@@ -79,24 +69,17 @@ void test_singleLevelWildcard(void) {
     subscribe("+/+/testSingleLeveLSub2", sub);
     publish((Posting) {.topic="abc/abc/testSingleLeveLSub2", .data="testData2"});
     checkLastData("testData2");
-
-    tearDown();
 }
 
 void test_multiLevelWildcard(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
     subscribe("testMultiLevelSub/#", sub);
     publish((Posting) {.topic="testMultiLevelSub/abc/abc", .data="testData1"});
     checkLastData("testData1");
-
-    tearDown();
 }
 
 void test_singleLevelWildcardUnsubscribe(void) {
-    setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
@@ -107,13 +90,9 @@ void test_singleLevelWildcardUnsubscribe(void) {
     unsubscribe("testSingleLevelUnsub/+/test", sub);
     publish((Posting) {.topic="testSingleLevelUnsub/abc/test", .data="testData1"});
     checkLastData("testData0");
-
-    tearDown();
 }
 
 void test_multiLevelWildcardUnsubscribe(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
 
     subscribe("testMultiLevelUnsub/#", sub);
@@ -123,8 +102,6 @@ void test_multiLevelWildcardUnsubscribe(void) {
     unsubscribe("testMultiLevelUnsub/#", sub);
     publish((Posting) {.topic="testMultiLevelUnsub/abc/abc", .data="testData1"});
     checkLastData("testData0");
-
-    tearDown();
 }
 
 int main(void) {
