@@ -1,5 +1,5 @@
-project("elastic-AI.runtime.c" C)
 cmake_minimum_required(VERSION 3.21)
+project("elastic-AI.runtime.c" VERSION 0.0.1 LANGUAGES C)
 
 # Let's tell it a bit about our environment
 # Note: With this line, CTest does not find a compiled test
