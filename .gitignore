@@ -37,5 +37,6 @@ _deps
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake,visualstudiocode
 cmake-build-debug
+cmake-build-test
 cmake-build-debug-system/
 build/
