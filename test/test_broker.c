@@ -1,4 +1,4 @@
-#include "../extern/unity/src/unity.h"
+#include "unity.h"
 #include <string.h>
 #include "posting.h"
 #include "subscriber.h"

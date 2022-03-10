@@ -7,6 +7,5 @@
 
   make all
 
-  #make test
-  ctest -V #To see printf output from tests
+  ctest -V # verbose shows print output from tests
 )
