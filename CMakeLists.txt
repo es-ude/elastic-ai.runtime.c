@@ -40,3 +40,4 @@ add_library(elastic-ai.runtime.c
         ${CMAKE_CURRENT_LIST_DIR}/src/protocol.h
         ${CMAKE_CURRENT_LIST_DIR}/src/communicationEndpoint.h
         ${CMAKE_CURRENT_LIST_DIR}/src/subscriber.h)
+target_include_directories(elastic-ai.runtime.c PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
