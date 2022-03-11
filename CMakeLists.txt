@@ -31,3 +31,12 @@ elseif (TARGET_GROUP STREQUAL test)
 else ()
     message(FATAL_ERROR "I don't know the TARGET_GROUP you gave me!")
 endif ()
+
+# For external use
+add_library(elastic-ai.runtime.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/posting.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/posting.h
+        ${CMAKE_CURRENT_LIST_DIR}/src/protocol.c
+        ${CMAKE_CURRENT_LIST_DIR}/src/protocol.h
+        ${CMAKE_CURRENT_LIST_DIR}/src/communicationEndpoint.h
+        ${CMAKE_CURRENT_LIST_DIR}/src/subscriber.h)
