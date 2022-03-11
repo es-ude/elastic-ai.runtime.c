@@ -16,6 +16,5 @@ bool multilevelWildcardIn(const char* subscribedTopic, int subscribedIterator);
 bool checkForEqualCharacterIn(const char *subscribedTopic, const char *publishedTopic, int subscribedIterator, int publishedIterator);
 bool checkForSingleLevelWildcardIn(const char *subscribedTopic, int subscribedIterator);
 bool checkIfWildcardEndedIn(const char *publishedTopic, int publishedIterator);
-char *ID();
 
 #endif //ELASTIC_AI_RUNTIME_C_BROKER_H
