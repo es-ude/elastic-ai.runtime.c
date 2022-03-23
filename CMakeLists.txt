@@ -19,7 +19,7 @@ if (TARGET_GROUP STREQUAL test)
 
     # It should give verbose test output when a test fails
     list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
-elseif (TARGET_GROUP STREQUAL production)
+elseif (TARGET_GROUP STREQUAL extern)
     # For external use
     add_library(elastic-ai.runtime.c
             ${CMAKE_CURRENT_LIST_DIR}/src/posting.c
