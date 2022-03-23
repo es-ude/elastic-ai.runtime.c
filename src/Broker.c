@@ -8,7 +8,7 @@ int numberSubscriber = 0;
 char identifier[] = "eip://uni-due.de/es/";
 Subscription subscriberList[64];
 
-char *addID(const char *topic) {
+char *concatIDWithTopic(const char *topic) {
     char *result = malloc(strlen(identifier) + strlen(topic) + 1);
     strcpy(result, identifier);
     strcat(result, topic);
@@ -69,7 +69,7 @@ bool checkIfWildcardEndedIn(const char *publishedTopic, int publishedIterator) {
 }
 
 void publish(Posting posting) {
-    char *topic = addID(posting.topic);
+    char *topic = concatIDWithTopic(posting.topic);
 
     for (int i = 0; i < numberSubscriber; ++i) {
         if (checkIfTopicMatches(subscriberList[i].topic, topic)) {
@@ -79,11 +79,11 @@ void publish(Posting posting) {
 }
 
 void subscribe(char *topic, Subscriber subscriber) {
-    subscribeRaw(addID(topic), subscriber);
+    subscribeRaw(concatIDWithTopic(topic), subscriber);
 }
 
 void unsubscribe(char *topic, Subscriber subscriber) {
-    unsubscribeRaw(addID(topic), subscriber);
+    unsubscribeRaw(concatIDWithTopic(topic), subscriber);
 }
 
 void subscribeRaw(char *topic, Subscriber subscriber) {
