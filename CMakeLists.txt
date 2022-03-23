@@ -17,6 +17,8 @@ if (TARGET_GROUP STREQUAL test)
     # It also needs to understand we have code in source and test directories
     add_subdirectory(test)
 
+	add_subdirectory(examples)
+
     # It should give verbose test output when a test fails
     list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 elseif (TARGET_GROUP STREQUAL extern)
@@ -30,7 +32,6 @@ elseif (TARGET_GROUP STREQUAL extern)
             ${CMAKE_CURRENT_LIST_DIR}/src/subscriber.h)
     target_include_directories(elastic-ai.runtime.c PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 
-    add_subdirectory(examples)
 else ()
     message(FATAL_ERROR "I don't know the TARGET_GROUP you gave me!")
 endif ()
