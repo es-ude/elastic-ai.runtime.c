@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 project("elastic-AI.runtime.c" VERSION 0.0.1 LANGUAGES C)
 
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+
+# Include Source Directory for every build target
+add_subdirectory(src)
+
 if (TARGET_GROUP STREQUAL test)
-    # Include Source directory
-    add_subdirectory(src)
 
     # Our tests need to let CTest know we're running tests
     include(CTest)
@@ -26,6 +29,8 @@ elseif (TARGET_GROUP STREQUAL production)
             ${CMAKE_CURRENT_LIST_DIR}/src/communicationEndpoint.h
             ${CMAKE_CURRENT_LIST_DIR}/src/subscriber.h)
     target_include_directories(elastic-ai.runtime.c PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
+
+    add_subdirectory(examples)
 else ()
     message(FATAL_ERROR "I don't know the TARGET_GROUP you gave me!")
 endif ()
