@@ -101,8 +101,8 @@ void unsubscribeRaw(char *topic, Subscriber subscriber) {
     }
 }
 
-void setID(char *newID) {
-    identifier = newID;
+void setID(char *ID) {
+    identifier = ID;
 }
 
 char *getID() {

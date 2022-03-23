@@ -20,6 +20,6 @@ void unsubscribeRaw(char *topic, Subscriber subscriber);
 
 char *getID();
 
-void changeID(char *ID, char *newID);
+void setID(char *ID);
 
 #endif //ELASTIC_AI_RUNTIME_C_COMMUNICATIONENDPOINT_H
