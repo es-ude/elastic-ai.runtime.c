@@ -1,6 +1,7 @@
 #include "unity.h"
 #include <string.h>
 #include "communicationEndpoint.h"
+#include "Broker.h"
 #include "posting.h"
 #include "protocol.h"
 
@@ -8,6 +9,7 @@ char *lastDelivered;
 
 void setUp(void) {
     lastDelivered = "\n";
+    setID("eip://uni-due.de/es/");
 }
 
 void tearDown(void) {

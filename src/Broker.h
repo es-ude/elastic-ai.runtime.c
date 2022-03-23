@@ -2,13 +2,15 @@
 #define ELASTIC_AI_RUNTIME_C_BROKER_H
 
 #include "subscriber.h"
+#include "stdbool.h"
 
 typedef struct Subscription {
     char *topic;
     Subscriber subscriber;
 } Subscription;
 
-char *addID(const char *topic);
+char *concatIDWithTopic(const char *topic);
+void setID(char *newID);
 bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic);
 bool topicsAreEqual(char *subscribedTopic, char *publishedTopic);
 bool subscribedTopicHasCharactersLeft(char *subscribedTopic, int subscribedIterator);

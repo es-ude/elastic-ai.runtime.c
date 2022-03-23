@@ -2,12 +2,14 @@
 #include <string.h>
 #include "posting.h"
 #include "subscriber.h"
+#include "Broker.h"
 #include "communicationEndpoint.h"
 
 char *lastDelivered;
 
 void setUp(void) {
     lastDelivered = "\n";
+    setID("eip://uni-due.de/es/");
 }
 
 void tearDown(void) {

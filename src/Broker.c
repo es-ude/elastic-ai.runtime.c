@@ -5,7 +5,7 @@
 #include "Broker.h"
 
 int numberSubscriber = 0;
-char identifier[] = "eip://uni-due.de/es/";
+char *identifier;
 Subscription subscriberList[64];
 
 char *concatIDWithTopic(const char *topic) {
@@ -101,6 +101,10 @@ void unsubscribeRaw(char *topic, Subscriber subscriber) {
     }
 }
 
-char *ID() {
+void setID(char *newID) {
+    identifier = newID;
+}
+
+char *getID() {
     return identifier;
 }
