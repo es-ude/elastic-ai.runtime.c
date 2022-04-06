@@ -9,7 +9,8 @@ The project does out-of-source builds in the `build` directory. It does not need
 
 ## Unit Tests
 
-Unit Tests use [Unity]() as a testing framework, which will be fetched automatically by cmake.
+Unit Tests use [ThrowTheSwitch/Unity](https://github.com/ThrowTheSwitch/Unity) as a testing framework, which will be
+fetched automatically by cmake.
 
 ## Shell Scripts
 
