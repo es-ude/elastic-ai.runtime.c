@@ -40,13 +40,8 @@ if (TARGET_GROUP STREQUAL test)
 
 elseif (TARGET_GROUP STREQUAL extern)
     # For external use
-    add_library(elastic-ai.runtime.c
-            ${CMAKE_CURRENT_LIST_DIR}/src/posting.c
-            ${CMAKE_CURRENT_LIST_DIR}/src/posting.h
-            ${CMAKE_CURRENT_LIST_DIR}/src/protocol.c
-            ${CMAKE_CURRENT_LIST_DIR}/src/protocol.h
-            ${CMAKE_CURRENT_LIST_DIR}/src/communicationEndpoint.h
-            ${CMAKE_CURRENT_LIST_DIR}/src/subscriber.h)
+    include(${CMAKE_CURRENT_LIST_DIR}/src/elastic-ai.runtime.cmake)
+    add_library(elastic-ai.runtime.c ${ELASTIC-AI-RUNTIME-LIB})
     target_include_directories(elastic-ai.runtime.c PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 
 else ()
