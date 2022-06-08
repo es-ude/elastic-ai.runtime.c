@@ -1,19 +1,19 @@
 #include "unity.h"
 #include <string.h>
 #include "communicationEndpoint.h"
-#include "Broker.h"
+#include "ExampleLocalBroker.h"
 #include "posting.h"
 #include "protocol.h"
-
+#include "stdlib.h"
 char *lastDelivered;
 
 void setUp(void) {
-    lastDelivered = "\n";
+    lastDelivered = "\0";
     setID("eip://uni-due.de/es/");
 }
 
 void tearDown(void) {
-    lastDelivered = "\n";
+    lastDelivered = "\0";
 }
 
 void checkLastData(char *expected) {
@@ -29,8 +29,6 @@ void deliver(Posting posting) {
 }
 
 void test_publishSubscribeForData(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
     subscribeForData("testSubData0", sub);
     subscribeForData("testSubData1", sub);
@@ -40,8 +38,6 @@ void test_publishSubscribeForData(void) {
 
     publishData("testSubData1", "testData1");
     checkLastData("testData1");
-
-    tearDown();
 }
 
 void test_publishUnsubscribeFromData(void) {
@@ -138,8 +134,8 @@ void test_publishCommand(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/testPubCmd0", sub);
-    subscribe("SET/testPubCmd1", sub);
+    subscribe("testPubCmd0/SET", sub);
+    subscribe("testPubCmd1/SET", sub);
 
     publishCommand("testPubCmd0", "0");
     checkLastData("0");
@@ -152,22 +148,18 @@ void test_publishCommand(void) {
 
 
 void test_publishOnCommand(void) {
-    setUp();
-
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/testPubOn0", sub);
+    subscribe("testPubOn0/SET", sub);
 
     publishOnCommand("testPubOn0");
     checkLastData("1");
-
-    tearDown();
 }
 
 void test_publishOffCommand(void) {
     setUp();
 
     Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("SET/testPubOff0", sub);
+    subscribe("testPubOff0/SET", sub);
 
     publishOffCommand("testPubOff0");
     checkLastData("0");
@@ -182,6 +174,10 @@ void test_subscribeForLost(void) {
     subscribeForLost("testSubLost0", sub);
     subscribeForLost("testSubLost1", sub);
 
+    char *topic = malloc(strlen("testSubLost0/LOST"));
+    Posting posting = (Posting) {.topic=topic, .data="testData0"};
+    publish(posting);
+    free(topic);
 
     publish((Posting) {.topic="testSubLost0/LOST", .data="testData0"});
     checkLastData("testData0");
