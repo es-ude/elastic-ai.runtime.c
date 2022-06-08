@@ -10,6 +10,8 @@
 
 void publish(Posting posting);
 
+void publishRaw(char *topic, Posting posting);
+
 void subscribe(char *topic, Subscriber subscriber);
 
 void unsubscribe(char *topic, Subscriber subscriber);

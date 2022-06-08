@@ -14,17 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Create build directory
-        run: mkdir ${{github.workspace}}/build
+      - name: Install Ninjga
+        run: sudo apt-get install ninja-build
 
-      - name: CMAKE
-        working-directory: ${{github.workspace}}/build
-        run: cmake -DTARGET_GROUP=test ..
+      - name: Setup CMake
+        run: cmake -B cmake-build-debug -G Ninja .
 
-      - name: Make all
-        working-directory: ${{github.workspace}}/build
-        run: make all
+      - name: Build test
+        run: cmake --build cmake-build-debug -j 4
 
       - name: Run tests
-        working-directory: ${{github.workspace}}/build
-        run: ctest -V
+        run: cmake --build cmake-build-debug -j 4

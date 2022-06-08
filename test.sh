@@ -1,15 +1,5 @@
 #! /bin/bash
 
-if ! [[ -d "build" ]]; then
-    mkdir build
-fi
+cmake --build cmake-build-debug -j 4
 
-(
-  cd build || exit
-
-  cmake -DTARGET_GROUP=test ..
-
-  make all
-
-  ctest -V # verbose shows print output from tests
-)
+ctest --test-dir cmake-build-debug/test --output-on-failure

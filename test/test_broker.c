@@ -2,7 +2,6 @@
 #include <string.h>
 #include "posting.h"
 #include "subscriber.h"
-#include "Broker.h"
 #include "communicationEndpoint.h"
 
 char *lastDelivered;

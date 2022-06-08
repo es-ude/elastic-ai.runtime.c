@@ -1,2 +1,0 @@
-add_executable(integration_test integration_test.c)
-target_link_libraries(integration_test broker)
