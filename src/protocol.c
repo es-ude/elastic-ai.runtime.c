@@ -4,10 +4,10 @@
 #include "posting.h"
 #include "communicationEndpoint.h"
 
-void addType(const char *type, const char *topic, char *result) {
-    strcpy(result, topic);
+void addType(const char *type, const char *typeSpec, char *result) {
+    strcpy(result, type);
     strcat(result, "/");
-    strcat(result, type);
+    strcat(result, typeSpec);
 }
 
 void subscribe_intern(char *type, char *topic, Subscriber subscriber) {
@@ -33,11 +33,11 @@ void unsubscribeFromData(char *dataId, Subscriber subscriber) {
 }
 
 void subscribeForHeartbeat(char *heartbeatSource, Subscriber subscriber) {
-    subscribe_intern("HEARTBEAT", heartbeatSource, subscriber);
+    subscribe_intern(heartbeatSource, "HEARTBEAT", subscriber);
 }
 
 void unsubscribeFromHeartbeat(char *heartbeatSource, Subscriber subscriber) {
-    unsubscribe_intern("HEARTBEAT", heartbeatSource, subscriber);
+    unsubscribe_intern(heartbeatSource, "HEARTBEAT", subscriber);
 }
 
 void subscribeForDataStartRequest(char *dataId, Subscriber subscriber) {
