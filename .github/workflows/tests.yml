@@ -14,14 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Ninjga
+      - name: Install Ninja
         run: sudo apt-get install ninja-build
 
       - name: Setup CMake
-        run: cmake -B cmake-build-debug -G Ninja .
+        run: cmake -B cmake-build-debug -G Ninja
 
       - name: Build test
         run: cmake --build cmake-build-debug -j 4
 
       - name: Run tests
-        run: cmake --build cmake-build-debug -j 4
+        run: ctest --test-dir cmake-build-debug/test --verbose

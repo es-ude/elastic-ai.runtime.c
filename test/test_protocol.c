@@ -5,209 +5,187 @@
 #include "posting.h"
 #include "protocol.h"
 #include "stdlib.h"
-char *lastDelivered;
+
+Posting lastDelivered;
 
 void setUp(void) {
-    lastDelivered = "\0";
+    lastDelivered.topic = "\0";
+    lastDelivered.data = "\0";
     setID("eip://uni-due.de/es/");
 }
 
 void tearDown(void) {
-    lastDelivered = "\0";
-}
-
-void checkLastData(char *expected) {
-    if (strcmp(expected, lastDelivered) != 0) {
-        printf("EXPECTED:%s\n", expected);
-        printf("ACTUAL:%s\n", lastDelivered);
-        TEST_FAIL();
-    }
+    lastDelivered.topic = "\0";
+    lastDelivered.data = "\0";
 }
 
 void deliver(Posting posting) {
-    lastDelivered = posting.data;
+    lastDelivered.topic = posting.topic;
+    lastDelivered.data = posting.data;
 }
 
+Subscriber subscriber = (Subscriber) {.deliver=deliver};
+
 void test_publishSubscribeForData(void) {
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForData("testSubData0", sub);
-    subscribeForData("testSubData1", sub);
+    subscribeForData("testSubData0", subscriber);
+    subscribeForData("testSubData1", subscriber);
 
     publishData("testSubData0", "testData0");
-    checkLastData("testData0");
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     publishData("testSubData1", "testData1");
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
+
+    unsubscribeFromData("testSubData0", subscriber);
+    unsubscribeFromData("testSubData1", subscriber);
 }
 
 void test_publishUnsubscribeFromData(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-
-    subscribeForData("testUnsubData0", sub);
-    subscribeForData("testUnsubData1", sub);
+    subscribeForData("testUnsubData0", subscriber);
+    subscribeForData("testUnsubData1", subscriber);
 
     publishData("testUnsubData0", "testData0");
-    checkLastData("testData0");
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     publishData("testUnsubData1", "testData1");
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    unsubscribeFromData("testUnsubData0", sub);
+    unsubscribeFromData("testUnsubData0", subscriber);
     publishData("testUnsubData0", "testData0");
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    tearDown();
+    unsubscribeFromData("testUnsubData1", subscriber);
 }
 
 void test_publishSubscribeForHeartbeat(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForHeartbeat("testSubHeart0", sub);
-    subscribeForHeartbeat("testSubHeart1", sub);
+    subscribeForHeartbeat("testSubHeart0", subscriber);
+    subscribeForHeartbeat("testSubHeart1", subscriber);
 
     publishHeartbeat("testSubHeart0");
-    checkLastData("testSubHeart0");
-    publishHeartbeat("testSubHeart1");
-    checkLastData("testSubHeart1");
+    TEST_ASSERT_EQUAL_STRING("testSubHeart0", lastDelivered.data);
 
-    tearDown();
+    publishHeartbeat("testSubHeart1");
+    TEST_ASSERT_EQUAL_STRING("testSubHeart1", lastDelivered.data);
+
+    unsubscribeFromHeartbeat("testUnsubHeart0", subscriber);
+    unsubscribeFromHeartbeat("testUnsubHeart1", subscriber);
 }
 
 void test_publishUnsubscribeFromHeartbeat(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-
-    subscribeForHeartbeat("testUnsubHeart0", sub);
-    subscribeForHeartbeat("testUnsubHeart1", sub);
+    subscribeForHeartbeat("testUnsubHeart0", subscriber);
+    subscribeForHeartbeat("testUnsubHeart1", subscriber);
 
     publishHeartbeat("testUnsubHeart0");
-    checkLastData("testUnsubHeart0");
-    publishHeartbeat("testUnsubHeart1");
-    checkLastData("testUnsubHeart1");
+    TEST_ASSERT_EQUAL_STRING("testUnsubHeart0", lastDelivered.data);
 
-    unsubscribeFromHeartbeat("testUnsubHeart0", sub);
+    publishHeartbeat("testUnsubHeart1");
+    TEST_ASSERT_EQUAL_STRING("testUnsubHeart1", lastDelivered.data);
+
+    unsubscribeFromHeartbeat("testUnsubHeart0", subscriber);
     publishHeartbeat("testUnsubHeart0");
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
-    checkLastData("testUnsubHeart1");
+    TEST_ASSERT_EQUAL_STRING("testUnsubHeart1", lastDelivered.data);
 
-    tearDown();
+    unsubscribeFromHeartbeat("testUnsubHeart1", subscriber);
 }
 
 void test_subscribeForDataStartRequest(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForDataStartRequest("testSubDataStart0", sub);
-    subscribeForDataStartRequest("testSubDataStart1", sub);
+    subscribeForDataStartRequest("testSubDataStart0", subscriber);
+    subscribeForDataStartRequest("testSubDataStart1", subscriber);
 
     publishDataStartRequest("testSubDataStart0", "testData0");
-    checkLastData("testData0");
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     publishDataStartRequest("testSubDataStart1", "testData1");
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    tearDown();
+    unsubscribe("START/testSubDataStop0", subscriber);
+    unsubscribe("START/testSubDataStop1", subscriber);
 }
 
 void test_subscribeForDataStopRequest(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForDataStopRequest("testSubDataStop0", sub);
-    subscribeForDataStopRequest("testSubDataStop1", sub);
+    subscribeForDataStopRequest("testSubDataStop0", subscriber);
+    subscribeForDataStopRequest("testSubDataStop1", subscriber);
 
     publishDataStopRequest("testSubDataStop0", "testData0");
-    checkLastData("testData0");
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     publishDataStopRequest("testSubDataStop1", "testData1");
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    tearDown();
+    unsubscribe("STOP/testSubDataStop0", subscriber);
+    unsubscribe("STOP/testSubDataStop1", subscriber);
 }
 
 void test_publishCommand(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("testPubCmd0/SET", sub);
-    subscribe("testPubCmd1/SET", sub);
+    subscribe("SET/testPubCmd0", subscriber);
+    subscribe("SET/testPubCmd1", subscriber);
 
     publishCommand("testPubCmd0", "0");
-    checkLastData("0");
+    TEST_ASSERT_EQUAL_STRING("0", lastDelivered.data);
 
     publishCommand("testPubCmd1", "1");
-    checkLastData("1");
+    TEST_ASSERT_EQUAL_STRING("1", lastDelivered.data);
 
-    tearDown();
+    unsubscribe("SET/testPubCmd0", subscriber);
+    unsubscribe("SET/testPubCmd1", subscriber);
 }
 
 
 void test_publishOnCommand(void) {
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("testPubOn0/SET", sub);
+    subscribe("SET/testPubOn0", subscriber);
 
     publishOnCommand("testPubOn0");
-    checkLastData("1");
+    TEST_ASSERT_EQUAL_STRING("1", lastDelivered.data);
+
+    unsubscribe("SET/testPubOn0", subscriber);
 }
 
 void test_publishOffCommand(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribe("testPubOff0/SET", sub);
+    subscribe("SET/testPubOff0", subscriber);
 
     publishOffCommand("testPubOff0");
-    checkLastData("0");
+    TEST_ASSERT_EQUAL_STRING("0", lastDelivered.data);
 
-    tearDown();
+    unsubscribe("SET/testPubOff0", subscriber);
 }
 
 void test_subscribeForLost(void) {
-    setUp();
-
-    Subscriber sub = (Subscriber) {.deliver=deliver};
-    subscribeForLost("testSubLost0", sub);
-    subscribeForLost("testSubLost1", sub);
+    subscribeForLost("testSubLost0", subscriber);
+    subscribeForLost("testSubLost1", subscriber);
 
     char *topic = malloc(strlen("testSubLost0/LOST"));
     Posting posting = (Posting) {.topic=topic, .data="testData0"};
     publish(posting);
     free(topic);
 
-    publish((Posting) {.topic="testSubLost0/LOST", .data="testData0"});
-    checkLastData("testData0");
+    publish((Posting) {.topic="LOST/testSubLost0", .data="testData0"});
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    publish((Posting) {.topic="testSubLost1/LOST", .data="testData1"});
-    checkLastData("testData1");
+    publish((Posting) {.topic="LOST/testSubLost1", .data="testData1"});
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    tearDown();
+    unsubscribeFromLost("testUnsubLost0", subscriber);
+    unsubscribeFromLost("testUnsubLost1", subscriber);
 }
 
 void test_unsubscribeFromLost(void) {
-    setUp();
+    subscribeForLost("testUnsubLost0", subscriber);
+    subscribeForLost("testUnsubLost1", subscriber);
 
-    Subscriber sub = (Subscriber) {.deliver=deliver};
+    publish((Posting) {.topic="LOST/testUnsubLost0", .data="testData0"});
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    subscribeForLost("testUnsubLost0", sub);
-    subscribeForLost("testUnsubLost1", sub);
+    publish((Posting) {.topic="LOST/testUnsubLost1", .data="testData1"});
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    publish((Posting) {.topic="testUnsubLost0/LOST", .data="testData0"});
-    checkLastData("testData0");
-
-    publish((Posting) {.topic="testUnsubLost1/LOST", .data="testData1"});
-    checkLastData("testData1");
-
-    unsubscribeFromLost("testUnsubLost0", sub);
-    publish((Posting) {.topic="testUnsubLost0/LOST", .data="testData0"});
+    unsubscribeFromLost("testUnsubLost0", subscriber);
+    publish((Posting) {.topic="LOST/testUnsubLost0", .data="testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
-    tearDown();
+    unsubscribeFromLost("testUnsubLost1", subscriber);
 }
 
 int main(void) {
