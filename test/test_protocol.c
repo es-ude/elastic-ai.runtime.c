@@ -19,14 +19,6 @@ void tearDown(void) {
     lastDelivered.data = "\0";
 }
 
-void checkLastData(char *expected) {
-    if (strcmp(expected, lastDelivered.data) != 0) {
-        printf("EXPECTED:%s\n", expected);
-        printf("ACTUAL:%s\n", lastDelivered);
-        TEST_FAIL();
-    }
-}
-
 void deliver(Posting posting) {
     lastDelivered.topic = posting.topic;
     lastDelivered.data = posting.data;
@@ -38,10 +30,10 @@ void test_publishSubscribeForData(void) {
     subscribeForData("testSubData1", sub);
 
     publishData("testSubData0", "testData0");
-    checkLastData("testData0");
+    TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     publishData("testSubData1", "testData1");
-    checkLastData("testData1");
+    TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 }
 
 void test_publishUnsubscribeFromData(void) {
