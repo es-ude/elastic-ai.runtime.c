@@ -69,7 +69,7 @@ void publishData(char *dataId, char *value) {
 }
 
 void publishHeartbeat(char *who) {
-    publish_intern("HEARTBEAT", who, who);
+    publish_intern(who, "HEARTBEAT", who);
 }
 
 void publishDataStartRequest(char *dataId, char *receiver) {
