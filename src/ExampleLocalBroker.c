@@ -1,9 +1,9 @@
-#include <string.h>
-#include <stdlib.h>
-#include "communicationEndpoint.h"
 #include "ExampleLocalBroker.h"
-#include "topicMatcher.h"
+#include "communicationEndpoint.h"
 #include "stdio.h"
+#include "topicMatcher.h"
+#include <stdlib.h>
+#include <string.h>
 
 int numberSubscriber = 0;
 char *identifier;
@@ -26,6 +26,7 @@ void publishRaw(char *topic, Posting posting) {
             subscriberList[i].subscriber.deliver(posting);
         }
     }
+    printf("Published to: %s\n", topic);
     free(topic);
 }
 
@@ -38,17 +39,18 @@ void unsubscribe(char *topic, Subscriber subscriber) {
 }
 
 void subscribeRaw(char *topic, Subscriber subscriber) {
-    subscriberList[numberSubscriber] = (Subscription) {.topic=topic, .subscriber=subscriber};
+    subscriberList[numberSubscriber] = (Subscription){.topic = topic, .subscriber = subscriber};
     numberSubscriber++;
+    printf("Subscribed to: %s\n", topic);
 }
 
 void unsubscribeRaw(char *topic, Subscriber subscriber) {
     for (int i = 0; i < numberSubscriber; ++i) {
         if (strcmp(subscriberList[i].topic, topic) == 0) {
             if (subscriberList[i].subscriber.deliver == subscriber.deliver) {
-                printf("EQUAL DELIVER");
                 strcpy(subscriberList[i].topic, "\0");
             }
+            printf("Unsubscribed to: %s\n", topic);
         }
     }
 }
