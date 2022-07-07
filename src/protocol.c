@@ -1,8 +1,8 @@
+#include "protocol.h"
+#include "communicationEndpoint.h"
+#include "posting.h"
 #include <stdlib.h>
 #include <string.h>
-#include "protocol.h"
-#include "posting.h"
-#include "communicationEndpoint.h"
 
 void addType(const char *type, const char *typeSpec, char *result) {
     strcpy(result, type);
@@ -59,7 +59,7 @@ void unsubscribeFromLost(char *client, Subscriber subscriber) {
 void publish_intern(char *type, char *dataId, char *value) {
     char *topic = malloc(strlen(type) + strlen(dataId) + 2);
     addType(type, dataId, topic);
-    Posting posting = (Posting) {.topic=topic, .data=value};
+    Posting posting = (Posting){.topic = topic, .data = value};
     publish(posting);
     free(topic);
 }

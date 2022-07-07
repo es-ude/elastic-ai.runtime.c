@@ -6,4 +6,4 @@ typedef struct Posting {
     char *data;
 } Posting;
 
-#endif //ELASTIC_AI_RUNTIME_C_POSTING_H
+#endif // ELASTIC_AI_RUNTIME_C_POSTING_H
