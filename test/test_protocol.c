@@ -1,10 +1,10 @@
-#include "unity.h"
-#include <string.h>
-#include "communicationEndpoint.h"
 #include "ExampleLocalBroker.h"
+#include "communicationEndpoint.h"
 #include "posting.h"
 #include "protocol.h"
 #include "stdlib.h"
+#include "unity.h"
+#include <string.h>
 
 Posting lastDelivered;
 
@@ -24,7 +24,7 @@ void deliver(Posting posting) {
     lastDelivered.data = posting.data;
 }
 
-Subscriber subscriber = (Subscriber) {.deliver=deliver};
+Subscriber subscriber = (Subscriber){.deliver = deliver};
 
 void test_publishSubscribeForData(void) {
     subscribeForData("testSubData0", subscriber);
@@ -132,7 +132,6 @@ void test_publishCommand(void) {
     unsubscribe("SET/testPubCmd1", subscriber);
 }
 
-
 void test_publishOnCommand(void) {
     subscribe("SET/testPubOn0", subscriber);
 
@@ -156,14 +155,14 @@ void test_subscribeForLost(void) {
     subscribeForLost("testSubLost1", subscriber);
 
     char *topic = malloc(strlen("testSubLost0/LOST"));
-    Posting posting = (Posting) {.topic=topic, .data="testData0"};
+    Posting posting = (Posting){.topic = topic, .data = "testData0"};
     publish(posting);
     free(topic);
 
-    publish((Posting) {.topic="LOST/testSubLost0", .data="testData0"});
+    publish((Posting){.topic = "LOST/testSubLost0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    publish((Posting) {.topic="LOST/testSubLost1", .data="testData1"});
+    publish((Posting){.topic = "LOST/testSubLost1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     unsubscribeFromLost("testUnsubLost0", subscriber);
@@ -174,14 +173,14 @@ void test_unsubscribeFromLost(void) {
     subscribeForLost("testUnsubLost0", subscriber);
     subscribeForLost("testUnsubLost1", subscriber);
 
-    publish((Posting) {.topic="LOST/testUnsubLost0", .data="testData0"});
+    publish((Posting){.topic = "LOST/testUnsubLost0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    publish((Posting) {.topic="LOST/testUnsubLost1", .data="testData1"});
+    publish((Posting){.topic = "LOST/testUnsubLost1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     unsubscribeFromLost("testUnsubLost0", subscriber);
-    publish((Posting) {.topic="LOST/testUnsubLost0", .data="testData0"});
+    publish((Posting){.topic = "LOST/testUnsubLost0", .data = "testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 

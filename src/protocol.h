@@ -33,4 +33,4 @@ void subscribeForLost(char *client, Subscriber subscriber);
 
 void unsubscribeFromLost(char *client, Subscriber subscriber);
 
-#endif //ELASTIC_AI_RUNTIME_C_PROTOCOL_H
+#endif // ELASTIC_AI_RUNTIME_C_PROTOCOL_H

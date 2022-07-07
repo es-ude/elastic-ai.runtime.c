@@ -5,4 +5,4 @@
 
 bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic);
 
-#endif //ELASTIC_AI_RUNTIME_C_TOPICMATCHER_H
+#endif // ELASTIC_AI_RUNTIME_C_TOPICMATCHER_H

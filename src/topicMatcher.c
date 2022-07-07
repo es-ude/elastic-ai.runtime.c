@@ -7,15 +7,16 @@ bool topicsAreEqual(char *subscribedTopic, char *publishedTopic) {
 }
 
 bool subscribedTopicHasCharactersLeft(char *subscribedTopic, int subscribedIterator) {
-    return subscribedIterator < strlen(subscribedTopic) && subscribedTopic[subscribedIterator] != '+';
+    return subscribedIterator < strlen(subscribedTopic) &&
+           subscribedTopic[subscribedIterator] != '+';
 }
 
 bool multilevelWildcardIn(const char *subscribedTopic, int subscribedIterator) {
     return subscribedTopic[subscribedIterator] == '#';
 }
 
-bool checkForEqualCharacterIn(const char *subscribedTopic, const char *publishedTopic, int subscribedIterator,
-                              int publishedIterator) {
+bool checkForEqualCharacterIn(const char *subscribedTopic, const char *publishedTopic,
+                              int subscribedIterator, int publishedIterator) {
     return subscribedTopic[subscribedIterator] == publishedTopic[publishedIterator];
 }
 
@@ -38,7 +39,8 @@ bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic) {
         if (multilevelWildcardIn(subscribedTopic, subscribedIterator)) {
             return true;
         }
-        if (checkForEqualCharacterIn(subscribedTopic, publishedTopic, subscribedIterator, publishedIterator)) {
+        if (checkForEqualCharacterIn(subscribedTopic, publishedTopic, subscribedIterator,
+                                     publishedIterator)) {
             subscribedIterator++;
             publishedIterator++;
         } else if (checkForSingleLevelWildcardIn(subscribedTopic, subscribedIterator)) {

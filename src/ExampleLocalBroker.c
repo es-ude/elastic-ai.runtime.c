@@ -1,9 +1,9 @@
-#include <string.h>
-#include <stdlib.h>
-#include "communicationEndpoint.h"
 #include "ExampleLocalBroker.h"
-#include "topicMatcher.h"
+#include "communicationEndpoint.h"
 #include "stdio.h"
+#include "topicMatcher.h"
+#include <stdlib.h>
+#include <string.h>
 
 int numberSubscriber = 0;
 char *identifier;
@@ -38,7 +38,7 @@ void unsubscribe(char *topic, Subscriber subscriber) {
 }
 
 void subscribeRaw(char *topic, Subscriber subscriber) {
-    subscriberList[numberSubscriber] = (Subscription) {.topic=topic, .subscriber=subscriber};
+    subscriberList[numberSubscriber] = (Subscription){.topic = topic, .subscriber = subscriber};
     numberSubscriber++;
 }
 
