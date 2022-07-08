@@ -3,9 +3,16 @@
 
 #include "subscriber.h"
 
-void subscribeForData(char *dataId, Subscriber subscriber);
+#define HEARTBEAT "HEART"
+#define DATA "DATA"
+#define START "START"
+#define STOP "STOP"
+#define LOST "LOST"
+#define SET "SET"
 
-void unsubscribeFromData(char *dataId, Subscriber subscriber);
+void subscribeForData(char *twin, char *dataId, Subscriber subscriber);
+
+void unsubscribeFromData(char *twin, char *dataId, Subscriber subscriber);
 
 void publishData(char *dataId, char *value);
 
@@ -15,9 +22,9 @@ void unsubscribeFromHeartbeat(char *heartbeatSource, Subscriber subscriber);
 
 void publishHeartbeat(char *who);
 
-void subscribeForDataStartRequest(char *dataId, Subscriber subscriber);
+void subscribeForDataStartRequest(char *twin, char *dataId, Subscriber subscriber);
 
-void subscribeForDataStopRequest(char *dataId, Subscriber subscriber);
+void subscribeForDataStopRequest(char *twin, char *dataId, Subscriber subscriber);
 
 void publishDataStartRequest(char *dataId, char *receiver);
 
@@ -29,8 +36,8 @@ void publishOnCommand(char *service);
 
 void publishOffCommand(char *service);
 
-void subscribeForLost(char *client, Subscriber subscriber);
+void subscribeForLost(char *twin, char *client, Subscriber subscriber);
 
-void unsubscribeFromLost(char *client, Subscriber subscriber);
+void unsubscribeFromLost(char *twin, char *client, Subscriber subscriber);
 
 #endif // ELASTIC_AI_RUNTIME_C_PROTOCOL_H
