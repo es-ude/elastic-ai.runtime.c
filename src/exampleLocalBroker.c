@@ -1,7 +1,8 @@
 #include "exampleLocalBroker.h"
 #include "communicationEndpoint.h"
-#include "stdio.h"
 #include "topicMatcher.h"
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
