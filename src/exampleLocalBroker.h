@@ -9,8 +9,4 @@ typedef struct Subscription {
     Subscriber subscriber;
 } Subscription;
 
-char *concatIDWithTopic(const char *topic);
-
-void setID(char *newID);
-
 #endif // ELASTIC_AI_RUNTIME_C_EXAMPLELOCALBROKER_H

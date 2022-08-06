@@ -8,7 +8,7 @@ char *lastDelivered;
 
 void setUp(void) {
     lastDelivered = "\n";
-    setID("eip://uni-due.de/es/");
+    init("eip://uni-due.de/es", "self");
 }
 
 void tearDown(void) {
@@ -27,7 +27,7 @@ void deliver(Posting posting) {
     lastDelivered = posting.data;
 }
 
-void test_publishSubscribeRaw(void) {
+void test_publishSubscribe(void) {
     Subscriber sub = (Subscriber){.deliver = deliver};
     subscribe("testPublishSub0", sub);
     subscribe("testPublishSub1", sub);
@@ -39,7 +39,7 @@ void test_publishSubscribeRaw(void) {
     checkLastData("testData1");
 }
 
-void test_publishUnsubscribeRaw(void) {
+void test_publishUnsubscribe(void) {
     Subscriber sub = (Subscriber){.deliver = deliver};
     subscribe("testPublishUnsub0", sub);
     subscribe("testPublishUnsub1", sub);
@@ -108,8 +108,8 @@ void test_multiLevelWildcardUnsubscribe(void) {
 int main(void) {
     UNITY_BEGIN();
 
-    RUN_TEST(test_publishSubscribeRaw);
-    RUN_TEST(test_publishUnsubscribeRaw);
+    RUN_TEST(test_publishSubscribe);
+    RUN_TEST(test_publishUnsubscribe);
 
     RUN_TEST(test_singleLevelWildcard);
     RUN_TEST(test_multiLevelWildcard);
