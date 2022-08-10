@@ -8,16 +8,6 @@
  * A MQTT-Broker implementation needs to implements these functions.
  */
 
-/*! @brief Initializes the Broker
- *
- * Sets the Domain and device identifier, needs to be called before any other function from this
- * file is called.
- *
- * @param domain Domain of the Broker
- * @param deviceIdentifier Unique identifier of the device in the MQTT network
- */
-void init(char *domain, char *deviceIdentifier);
-
 /*! Sets the Domain of the Broker
  *
  * @param domain Domain of the Broker

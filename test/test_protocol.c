@@ -1,4 +1,5 @@
 #include "communicationEndpoint.h"
+#include "exampleLocalBroker.h"
 #include "posting.h"
 #include "protocol.h"
 #include "unity.h"
