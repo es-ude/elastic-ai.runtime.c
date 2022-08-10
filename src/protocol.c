@@ -1,26 +1,11 @@
 #include "protocol.h"
 #include "communicationEndpoint.h"
 #include "posting.h"
+#include "protocol_intern.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void publish_intern(char *type, char *dataId, char *value);
-
-void subscribe_intern(char *type, char *data, Subscriber subscriber);
-
-void unsubscribe_intern(char *type, char *data, Subscriber subscriber);
-
-void publishRemote_intern(char *twin, char *type, char *dataId, char *value);
-
-void subscribeRemote_intern(char *twin, char *type, char *data, Subscriber subscriber);
-
-void unsubscribeRemote_intern(char *twin, char *type, char *data, Subscriber subscriber);
-
-char *addType(const char *type, const char *data);
-
-char *getTopic(const char *twin, const char *type, const char *data);
 
 /*** SELF ***/
 void publish_intern(char *type, char *dataId, char *value) {

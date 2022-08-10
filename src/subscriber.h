@@ -3,7 +3,11 @@
 
 #include "posting.h"
 
-typedef struct Subscriber {
+/*!
+ * Struct representing a subscriber
+ */
+typedef struct Subscriber_t {
+    /*! The function called with the Posting when a message is published to it */
     void (*deliver)(Posting posting);
 } Subscriber;
 
