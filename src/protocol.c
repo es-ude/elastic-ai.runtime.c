@@ -2,6 +2,7 @@
 #include "communicationEndpoint.h"
 #include "posting.h"
 #include "protocol_intern.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
