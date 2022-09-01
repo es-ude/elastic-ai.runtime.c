@@ -18,6 +18,6 @@ struct subscription {
     char *topic;
     subscriber_t subscriber;
 };
-typdef struct subscription subscription_t;
+typedef struct subscription subscription_t;
 
 #endif /* ELASTIC_AI_RUNTIME_C_EXAMPLE_LOCAL_BROKER_H */

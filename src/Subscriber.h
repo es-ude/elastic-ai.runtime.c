@@ -8,7 +8,7 @@
  */
 struct subscriber {
     /*! The function called with the posting when a message is published to it */
-    void (*deliver)(posting posting);
+    void (*deliver)(posting_t posting);
 };
 typedef struct subscriber subscriber_t;
 
