@@ -1,8 +1,8 @@
-#ifndef ELASTIC_AI_RUNTIME_C_EXAMPLELOCALBROKER_H
-#define ELASTIC_AI_RUNTIME_C_EXAMPLELOCALBROKER_H
+#ifndef ELASTIC_AI_RUNTIME_C_EXAMPLE_LOCAL_BROKER_H
+#define ELASTIC_AI_RUNTIME_C_EXAMPLE_LOCAL_BROKER_H
 
-#include "stdbool.h"
-#include "subscriber.h"
+#include "Subscriber.h"
+#include <stdbool.h>
 
 /*! @brief Initializes the Broker
  *
@@ -14,9 +14,10 @@
  */
 void init(char *domain, char *deviceIdentifier);
 
-typedef struct Subscription {
+struct subscription {
     char *topic;
-    Subscriber subscriber;
-} Subscription;
+    subscriber_t subscriber;
+};
+typdef struct subscription subscription_t;
 
-#endif // ELASTIC_AI_RUNTIME_C_EXAMPLELOCALBROKER_H
+#endif /* ELASTIC_AI_RUNTIME_C_EXAMPLE_LOCAL_BROKER_H */
