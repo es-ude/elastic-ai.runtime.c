@@ -9,6 +9,6 @@
  * @param publishedTopic Topic that is published
  * @return True if topic matches
  */
-bool checkIfTopicMatches(char *subscribedTopic, char *publishedTopic);
+bool TopicMatcherCheckIfTopicMatches(char *subscribedTopic, char *publishedTopic);
 
-#endif // ELASTIC_AI_RUNTIME_C_TOPICMATCHER_H
+#endif /* ELASTIC_AI_RUNTIME_C_TOPICMATCHER_H */

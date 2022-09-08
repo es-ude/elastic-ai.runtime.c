@@ -1,6 +1,6 @@
-#include "exampleLocalBroker.h"
-#include "communicationEndpoint.h"
-#include "topicMatcher.h"
+#include "ExampleLocalBroker.h"
+#include "CommunicationEndpoint.h"
+#include "TopicMatcher.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +9,7 @@
 int numberSubscriber = 0;
 char *brokerDomain;
 char *brokerDeviceIdentifier;
-Subscription subscriberList[64];
+subscription_t subscriberList[64];
 
 void init(char *domain, char *deviceIdentifier) {
     brokerDomain = malloc(strlen(domain) + 1);
@@ -18,23 +18,23 @@ void init(char *domain, char *deviceIdentifier) {
     brokerDeviceIdentifier = deviceIdentifier;
 }
 
-void setDomain(char *deviceIdentifier) {
+void CommunicationEndpointSetDomain(char *deviceIdentifier) {
     free(brokerDomain);
     brokerDomain = malloc(strlen(deviceIdentifier) + 1);
     brokerDomain = deviceIdentifier;
 }
 
-char *getDomain() {
+char *CommunicationEndpointGetDomain() {
     return brokerDomain;
 }
 
-void setDeviceID(char *deviceIdentifier) {
+void CommunicationEndpointSetDeviceId(char *deviceIdentifier) {
     free(brokerDeviceIdentifier);
     brokerDeviceIdentifier = malloc(strlen(deviceIdentifier) + 1);
     brokerDeviceIdentifier = deviceIdentifier;
 }
 
-char *getDeviceID() {
+char *CommunicationEndpointGetDeviceId() {
     return brokerDeviceIdentifier;
 }
 
@@ -52,60 +52,61 @@ char *concatIDWithDomainAndID(const char *topic) {
     return result;
 }
 
-void publish(Posting posting) {
+void CommunicationEndpointPublish(posting_t posting) {
     posting.topic = concatIDWithDomainAndID(posting.topic);
-    publishRaw(posting);
+    CommunicationEndpointPublishRaw(posting);
     free(posting.topic);
 }
 
-void publishRemote(Posting posting) {
+void CommunicationEndpointPublishRemote(posting_t posting) {
     posting.topic = concatIDWithDomain(posting.topic);
-    publishRaw(posting);
+    CommunicationEndpointPublishRaw(posting);
     free(posting.topic);
 }
 
-void publishRaw(Posting posting) {
+void CommunicationEndpointPublishRaw(posting_t posting) {
     for (int i = 0; i < numberSubscriber; ++i) {
-        if (checkIfTopicMatches(subscriberList[i].topic, posting.topic)) {
+        if (TopicMatcherCheckIfTopicMatches(subscriberList[i].topic, posting.topic)) {
             subscriberList[i].subscriber.deliver(posting);
         }
     }
     printf("Published to:\t\t%s\n", posting.topic);
 }
 
-void subscribe(char *topic, Subscriber subscriber) {
+void CommunicationEndpointSubscribe(char *topic, subscriber_t subscriber) {
     char *newTopic = concatIDWithDomainAndID(topic);
-    subscribeRaw(newTopic, subscriber);
+    CommunicationEndpointSubscribeRaw(newTopic, subscriber);
     free(newTopic);
 }
 
-void subscribeRemote(char *topic, Subscriber subscriber) {
+void CommunicationEndpointSubscribeRemote(char *topic, subscriber_t subscriber) {
     char *newTopic = concatIDWithDomain(topic);
-    subscribeRaw(newTopic, subscriber);
+    CommunicationEndpointSubscribeRaw(newTopic, subscriber);
     free(newTopic);
 }
 
-void unsubscribe(char *topic, Subscriber subscriber) {
+void CommunicationEndpointUnsubscribe(char *topic, subscriber_t subscriber) {
     char *newTopic = concatIDWithDomainAndID(topic);
-    unsubscribeRaw(newTopic, subscriber);
+    CommunicationEndpointUnsubscribeRaw(newTopic, subscriber);
     free(newTopic);
 }
 
-void unsubscribeRemote(char *topic, Subscriber subscriber) {
+void CommunicationEndpointUnsubscribeRemote(char *topic, subscriber_t subscriber) {
     char *newTopic = concatIDWithDomain(topic);
-    unsubscribeRaw(newTopic, subscriber);
+    CommunicationEndpointUnsubscribeRaw(newTopic, subscriber);
     free(newTopic);
 }
 
-void subscribeRaw(char *topic, Subscriber subscriber) {
+void CommunicationEndpointSubscribeRaw(char *topic, subscriber_t subscriber) {
     char *newTopic = malloc(strlen(topic) + 1);
     strcpy(newTopic, topic);
-    subscriberList[numberSubscriber] = (Subscription){.topic = newTopic, .subscriber = subscriber};
+    subscriberList[numberSubscriber] =
+        (subscription_t){.topic = newTopic, .subscriber = subscriber};
     numberSubscriber++;
     printf("Subscribed to:\t\t%s\n", topic);
 }
 
-void unsubscribeRaw(char *topic, Subscriber subscriber) {
+void CommunicationEndpointUnsubscribeRaw(char *topic, subscriber_t subscriber) {
     for (int i = 0; i < numberSubscriber; ++i) {
         if (strcmp(subscriberList[i].topic, topic) == 0) {
             if (subscriberList[i].subscriber.deliver == subscriber.deliver) {
