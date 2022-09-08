@@ -176,12 +176,12 @@ void test_subscribeForDataStopRequest(void) {
     ProtocolSubscribeForDataStopRequest("testSubDataStop0", subscriber);
     ProtocolSubscribeForDataStopRequest("testSubDataStop1", subscriber);
 
-    CommunicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/STOP/testSubDataStop0", .data = "testData0"});
+    CommunicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/STOP/testSubDataStop0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    CommunicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/STOP/testSubDataStop1", .data = "testData1"});
+    CommunicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/STOP/testSubDataStop1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     ProtocolUnsubscribeFromDataStopRequest("testSubDataStop0", subscriber);
