@@ -3,6 +3,7 @@
 
 #include "Posting.h"
 #include "Subscriber.h"
+#include <stdint.h>
 
 /*!
  * A MQTT-Broker implementation needs to implements these functions.
@@ -10,27 +11,29 @@
 
 /*! Sets the Domain of the Broker
  *
- * @param domain Domain of the Broker
+ * @param brokerDomain Domain of the Broker
  */
-void CommunicationEndpointSetDomain(char *domain);
+void CommunicationEndpointSetBrokerDomain(char *brokerDomain);
 
 /*! Returns the Domain of the Broker
  *
  * @return Domain of the Broker
  */
-char *CommunicationEndpointGetDomain();
+char *CommunicationEndpointGetBrokerDomain();
 
-/*!
+/*! Sets the identifier of the clients and the user identifier with the corresponding password
  *
- * @param deviceIdentifier Unique identifier of the device in the MQTT network
+ * @param clientId Identifier of the Client
+ * @param userId User Identifier
+ * @param password Password correlating with the user identifier
  */
-void CommunicationEndpointSetDeviceId(char *deviceIdentifier);
+uint8_t CommunicationEndpointSetUserConfiguration(char *clientId, char *userId, char *password);
 
-/*!
+/*! Returns the identifier of the client
  *
- * @return Unique identifier of the device in the MQTT network
+ * @return Identifier of the Client
  */
-char *CommunicationEndpointGetDeviceId();
+char *CommunicationEndpointGetClientId();
 
 /*! Publishes the posting_t, including the Domain and Device identification in the topic
  *
