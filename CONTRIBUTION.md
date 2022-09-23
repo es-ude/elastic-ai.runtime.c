@@ -2,16 +2,16 @@
 
 ## Naming Scheme
 
-|        Scope | Scheme               |                                                        |
-| -----------: | :------------------- | :----------------------------------------------------- |
-|        Files | PascalScheme         |                                                        |
-|    Functions | PascalScheme         |                                                        |
-|    Variables | camelCase            | suffix: typedef => `_t`, static => `_s`, const => `_c` |
-| Preprocessor | SCREAMING_SNAKE_CASE |                                                        |
+|        Scope | Scheme               |                          |
+| -----------: |:---------------------|:-------------------------|
+|        Files | PascalScheme         |                          |
+|    Functions | camelCase            |                          |
+|    Variables | camelCase            | suffix: typedef => `_t`  |
+| Preprocessor | SCREAMING_SNAKE_CASE |                          |
 
 Functions and variables should be prefixed with a consistent identifier.
 
-## Push
+## Publish Modifications
 
-Don't push directly to the `main` branch. Push your modification to a new branch and open a push request to `main` for
-these modifications.
+Don't push directly to the `main` branch. Push your modification to a new branch and open a pull request to `main`, so
+that the maintainer of this repository can merge your modifications.
