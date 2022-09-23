@@ -181,6 +181,7 @@ void test_subscribeForDataStopRequest(void) {
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
+
         .topic = "eip://uni-due.de/es/self/STOP/testSubDataStop1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
