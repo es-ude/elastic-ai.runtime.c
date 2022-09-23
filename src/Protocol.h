@@ -12,47 +12,47 @@
 
 /* region SELF */
 
-void ProtocolPublishData(char *dataId, char *value);
+void protocolPublishData(char *dataId, char *valueToPublish);
 
-void ProtocolPublishHeartbeat(char *who);
+void protocolPublishHeartbeat(char *who);
 
-void ProtocolSubscribeForDataStartRequest(char *dataId, subscriber_t subscriber);
+void protocolSubscribeForDataStartRequest(char *dataId, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromDataStartRequest(char *dataId, subscriber_t subscriber);
+void protocolUnsubscribeFromDataStartRequest(char *dataId, subscriber_t subscriber);
 
-void ProtocolSubscribeForDataStopRequest(char *dataId, subscriber_t subscriber);
+void protocolSubscribeForDataStopRequest(char *dataId, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromDataStopRequest(char *dataId, subscriber_t subscriber);
+void protocolUnsubscribeFromDataStopRequest(char *dataId, subscriber_t subscriber);
 
-void ProtocolSubscribeForCommand(char *dataId, subscriber_t subscriber);
+void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber);
+void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber);
 
 /* endregion */
 
 /*region REMOTE */
 
-void ProtocolPublishDataStartRequest(char *twin, char *dataId, char *receiver);
+void protocolPublishDataStartRequest(char *twin, char *dataId, char *receiver);
 
-void ProtocolPublishDataStopRequest(char *twin, char *dataId, char *receiver);
+void protocolPublishDataStopRequest(char *twin, char *dataId, char *receiver);
 
-void ProtocolPublishCommand(char *twin, char *service, char *cmd);
+void protocolPublishCommand(char *twin, char *service, char *cmd);
 
-void ProtocolPublishOnCommand(char *twin, char *service);
+void protocolPublishOnCommand(char *twin, char *service);
 
-void ProtocolPublishOffCommand(char *twin, char *service);
+void protocolPublishOffCommand(char *twin, char *service);
 
-void ProtocolSubscribeForData(char *twin, char *dataId, subscriber_t subscriber);
+void protocolSubscribeForData(char *twin, char *dataId, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromData(char *twin, char *dataId, subscriber_t subscriber);
+void protocolUnsubscribeFromData(char *twin, char *dataId, subscriber_t subscriber);
 
-void ProtocolSubscribeForHeartbeat(char *heartbeatSource, subscriber_t subscriber);
+void protocolSubscribeForHeartbeat(char *heartbeatSource, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromHeartbeat(char *heartbeatSource, subscriber_t subscriber);
+void protocolUnsubscribeFromHeartbeat(char *heartbeatSource, subscriber_t subscriber);
 
-void ProtocolSubscribeForLost(char *twin, subscriber_t subscriber);
+void protocolSubscribeForLost(char *twin, subscriber_t subscriber);
 
-void ProtocolUnsubscribeFromLost(char *twin, subscriber_t subscriber);
+void protocolUnsubscribeFromLost(char *twin, subscriber_t subscriber);
 
 /* endregion */
 

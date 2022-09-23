@@ -30,29 +30,29 @@ void deliver(posting_t posting) {
 
 void test_publishSubscribe(void) {
     subscriber_t sub = (subscriber_t){.deliver = deliver};
-    CommunicationEndpointSubscribe("testPublishSub0", sub);
-    CommunicationEndpointSubscribe("testPublishSub1", sub);
+    communicationEndpointSubscribe("testPublishSub0", sub);
+    communicationEndpointSubscribe("testPublishSub1", sub);
 
-    CommunicationEndpointPublish((posting_t){.topic = "testPublishSub0", .data = "testData0"});
+    communicationEndpointPublish((posting_t){.topic = "testPublishSub0", .data = "testData0"});
     checkLastData("testData0");
 
-    CommunicationEndpointPublish((posting_t){.topic = "testPublishSub1", .data = "testData1"});
+    communicationEndpointPublish((posting_t){.topic = "testPublishSub1", .data = "testData1"});
     checkLastData("testData1");
 }
 
 void test_publishUnsubscribe(void) {
     subscriber_t sub = (subscriber_t){.deliver = deliver};
-    CommunicationEndpointSubscribe("testPublishUnsub0", sub);
-    CommunicationEndpointSubscribe("testPublishUnsub1", sub);
+    communicationEndpointSubscribe("testPublishUnsub0", sub);
+    communicationEndpointSubscribe("testPublishUnsub1", sub);
 
-    CommunicationEndpointPublish((posting_t){.topic = "testPublishUnsub0", .data = "testData0"});
+    communicationEndpointPublish((posting_t){.topic = "testPublishUnsub0", .data = "testData0"});
     checkLastData("testData0");
 
-    CommunicationEndpointPublish((posting_t){.topic = "testPublishUnsub1", .data = "testData1"});
+    communicationEndpointPublish((posting_t){.topic = "testPublishUnsub1", .data = "testData1"});
     checkLastData("testData1");
 
-    CommunicationEndpointUnsubscribe("testPublishUnsub0", sub);
-    CommunicationEndpointPublish((posting_t){.topic = "testPublishUnsub0", .data = "testData0"});
+    communicationEndpointUnsubscribe("testPublishUnsub0", sub);
+    communicationEndpointPublish((posting_t){.topic = "testPublishUnsub0", .data = "testData0"});
     // Should not have changed as subscriber_t is now longer subscribed too topic: test0
     checkLastData("testData1");
 }
@@ -60,18 +60,18 @@ void test_publishUnsubscribe(void) {
 void test_singleLevelWildcard(void) {
     subscriber_t sub = (subscriber_t){.deliver = deliver};
 
-    CommunicationEndpointSubscribe("testSingleLeveLSub0/+/test", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("testSingleLeveLSub0/+/test", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testSingleLeveLSub0/abc/test", .data = "testData0"});
     checkLastData("testData0");
 
-    CommunicationEndpointSubscribe("testSingleLeveLSub1/+/+", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("testSingleLeveLSub1/+/+", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testSingleLeveLSub1/abc/abc", .data = "testData1"});
     checkLastData("testData1");
 
-    CommunicationEndpointSubscribe("+/+/testSingleLeveLSub2", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("+/+/testSingleLeveLSub2", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "abc/abc/testSingleLeveLSub2", .data = "testData2"});
     checkLastData("testData2");
 }
@@ -79,8 +79,8 @@ void test_singleLevelWildcard(void) {
 void test_multiLevelWildcard(void) {
     subscriber_t sub = (subscriber_t){.deliver = deliver};
 
-    CommunicationEndpointSubscribe("testMultiLevelSub/#", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("testMultiLevelSub/#", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testMultiLevelSub/abc/abc", .data = "testData1"});
     checkLastData("testData1");
 }
@@ -89,13 +89,13 @@ void test_singleLevelWildcardUnsubscribe(void) {
 
     subscriber_t sub = (subscriber_t){.deliver = deliver};
 
-    CommunicationEndpointSubscribe("testSingleLevelUnsub/+/test", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("testSingleLevelUnsub/+/test", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testSingleLevelUnsub/abc/test", .data = "testData0"});
     checkLastData("testData0");
 
-    CommunicationEndpointUnsubscribe("testSingleLevelUnsub/+/test", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointUnsubscribe("testSingleLevelUnsub/+/test", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testSingleLevelUnsub/abc/test", .data = "testData1"});
     checkLastData("testData0");
 }
@@ -103,13 +103,13 @@ void test_singleLevelWildcardUnsubscribe(void) {
 void test_multiLevelWildcardUnsubscribe(void) {
     subscriber_t sub = (subscriber_t){.deliver = deliver};
 
-    CommunicationEndpointSubscribe("testMultiLevelUnsub/#", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointSubscribe("testMultiLevelUnsub/#", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testMultiLevelUnsub/abc/abc", .data = "testData0"});
     checkLastData("testData0");
 
-    CommunicationEndpointUnsubscribe("testMultiLevelUnsub/#", sub);
-    CommunicationEndpointPublish(
+    communicationEndpointUnsubscribe("testMultiLevelUnsub/#", sub);
+    communicationEndpointPublish(
         (posting_t){.topic = "testMultiLevelUnsub/abc/abc", .data = "testData1"});
     checkLastData("testData0");
 }
