@@ -13,13 +13,15 @@
  *
  * @param brokerDomain Domain of the Broker
  */
-void CommunicationEndpointSetBrokerDomain(char *brokerDomain);
+
+void communicationEndpointSetBrokerDomain(char *brokerDomain);
 
 /*! Returns the Domain of the Broker
  *
  * @return Domain of the Broker
  */
-char *CommunicationEndpointGetBrokerDomain();
+
+char *communicationEndpointGetBrokerDomain();
 
 /*! Sets the identifier of the clients and the user identifier with the corresponding password
  *
@@ -27,72 +29,73 @@ char *CommunicationEndpointGetBrokerDomain();
  * @param userId User Identifier
  * @param password Password correlating with the user identifier
  */
-uint8_t CommunicationEndpointSetUserConfiguration(char *clientId, char *userId, char *password);
+
+uint8_t communicationEndpointSetUserConfiguration(char *clientId, char *userId, char *password);
 
 /*! Returns the identifier of the client
  *
  * @return Identifier of the Client
  */
-char *CommunicationEndpointGetClientId();
+char *communicationEndpointGetClientId();
 
-/*! Publishes the posting_t, including the Domain and Device identification in the topic
+/*! Publishes the Posting, including the Domain and Device identification in the topic
  *
- * @param posting_t posting_t to be published
+ * @param posting Posting to be published
  */
-void CommunicationEndpointPublish(posting_t posting);
+void communicationEndpointPublish(posting_t posting);
 
-/*! Publishes the posting_t, adding the Domain in the topic
+/*! Publishes the Posting, adding the Domain in the topic
  *
- * @param posting_t posting_t to be published
+ * @param posting Posting to be published
  */
-void CommunicationEndpointPublishRemote(posting_t posting);
+void communicationEndpointPublishRemote(posting_t posting);
 
-/*! Publishes the posting_t as it is
+/*! Publishes the Posting as it is
  *
- * @param posting_t posting_t to be published
+ * @param posting Posting to be published
  */
-void CommunicationEndpointPublishRaw(posting_t posting);
+void communicationEndpointPublishRaw(posting_t posting);
 
 /*! Subscribes to the topic adding the Domain and device identification
  *
- * @param topic Topic to subscribe to Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to subscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointSubscribe(char *topic, subscriber_t subscriber);
+void communicationEndpointSubscribe(char *topic, subscriber_t subscriber);
 
 /*! Subscribes to the topic adding the Domain
  *
- * @param topic Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to subscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointSubscribeRemote(char *topic, subscriber_t subscriber);
+void communicationEndpointSubscribeRemote(char *topic, subscriber_t subscriber);
 
 /*! Subscribes to the topic as it is
  *
- * @param topic Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to subscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointSubscribeRaw(char *topic, subscriber_t subscriber);
+void communicationEndpointSubscribeRaw(char *topic, subscriber_t subscriber);
 
 /*! Unsubscribes to the topic adding the Domain and device identification
  *
- * @param topic Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to unsubscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointUnsubscribe(char *topic, subscriber_t subscriber);
+void communicationEndpointUnsubscribe(char *topic, subscriber_t subscriber);
 
 /*! Unsubscribes to the topic adding the Domain
  *
- * @param topic Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to unsubscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointUnsubscribeRemote(char *topic, subscriber_t subscriber);
+void communicationEndpointUnsubscribeRemote(char *topic, subscriber_t subscriber);
 
 /*! Unsubscribes to the topic as it is
  *
- * @param topic Topic to CommunicationEndpointSubscribe to
+ * @param topic Topic to unsubscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void CommunicationEndpointUnsubscribeRaw(char *topic, subscriber_t subscriber);
+void communicationEndpointUnsubscribeRaw(char *topic, subscriber_t subscriber);
 
 #endif /* ELASTIC_AI_RUNTIME_C_COMMUNICATION_ENDPOINT_H */

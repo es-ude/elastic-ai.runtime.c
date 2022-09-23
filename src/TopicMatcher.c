@@ -5,32 +5,32 @@
 
 /* region PUBLIC HEADER FUNCTIONS */
 
-bool TopicMatcherCheckIfTopicMatches(char *subscribedTopic, char *publishedTopic) {
-    if (TopicMatcherInternalTopicsAreEqual(subscribedTopic, publishedTopic)) {
+bool topicMatcherCheckIfTopicMatches(char *subscribedTopic, char *publishedTopic) {
+    if (topicMatcherInternalTopicsAreEqual(subscribedTopic, publishedTopic)) {
         return true;
     }
     int subscribedIterator = 0;
     int publishedIterator = 0;
 
     while (publishedIterator < strlen(publishedTopic)) {
-        if (TopicMatcherInternalMultiLevelWildcardIn(subscribedTopic, subscribedIterator)) {
+        if (topicMatcherInternalMultiLevelWildcardIn(subscribedTopic, subscribedIterator)) {
             return true;
         }
-        if (TopicMatcherInternalCheckForEqualCharacterIn(subscribedTopic, publishedTopic,
+        if (topicMatcherInternalCheckForEqualCharacterIn(subscribedTopic, publishedTopic,
                                                          subscribedIterator, publishedIterator)) {
             subscribedIterator++;
             publishedIterator++;
-        } else if (TopicMatcherInternalCheckForSingleLevelWildcardIn(subscribedTopic,
+        } else if (topicMatcherInternalCheckForSingleLevelWildcardIn(subscribedTopic,
                                                                      subscribedIterator)) {
             publishedIterator++;
-            if (TopicMatcherInternalCheckIfWildcardEndedIn(publishedTopic, publishedIterator)) {
+            if (topicMatcherInternalCheckIfWildcardEndedIn(publishedTopic, publishedIterator)) {
                 subscribedIterator++;
             }
         } else {
             return false;
         }
     }
-    if (TopicMatcherInternalSubscribedTopicHasCharactersLeft(subscribedTopic, subscribedIterator)) {
+    if (topicMatcherInternalSubscribedTopicHasCharactersLeft(subscribedTopic, subscribedIterator)) {
         return false;
     }
     return true;
@@ -40,34 +40,34 @@ bool TopicMatcherCheckIfTopicMatches(char *subscribedTopic, char *publishedTopic
 
 /* region INTERNAL HEADER FUNCTIONS */
 
-static bool TopicMatcherInternalTopicsAreEqual(char *subscribedTopic, char *publishedTopic) {
+static bool topicMatcherInternalTopicsAreEqual(char *subscribedTopic, char *publishedTopic) {
     return strcmp(subscribedTopic, publishedTopic) == 0;
 }
 
-static bool TopicMatcherInternalSubscribedTopicHasCharactersLeft(char *subscribedTopic,
+static bool topicMatcherInternalSubscribedTopicHasCharactersLeft(char *subscribedTopic,
                                                                  int subscribedIterator) {
     return subscribedIterator < strlen(subscribedTopic) &&
            subscribedTopic[subscribedIterator] != '+';
 }
 
-static bool TopicMatcherInternalMultiLevelWildcardIn(const char *subscribedTopic,
+static bool topicMatcherInternalMultiLevelWildcardIn(const char *subscribedTopic,
                                                      int subscribedIterator) {
     return subscribedTopic[subscribedIterator] == '#';
 }
 
-static bool TopicMatcherInternalCheckForEqualCharacterIn(const char *subscribedTopic,
+static bool topicMatcherInternalCheckForEqualCharacterIn(const char *subscribedTopic,
                                                          const char *publishedTopic,
                                                          int subscribedIterator,
                                                          int publishedIterator) {
     return subscribedTopic[subscribedIterator] == publishedTopic[publishedIterator];
 }
 
-static bool TopicMatcherInternalCheckForSingleLevelWildcardIn(const char *subscribedTopic,
+static bool topicMatcherInternalCheckForSingleLevelWildcardIn(const char *subscribedTopic,
                                                               int subscribedIterator) {
     return subscribedTopic[subscribedIterator] == '+';
 }
 
-static bool TopicMatcherInternalCheckIfWildcardEndedIn(const char *publishedTopic,
+static bool topicMatcherInternalCheckIfWildcardEndedIn(const char *publishedTopic,
                                                        int publishedIterator) {
     return publishedTopic[publishedIterator] == '/';
 }

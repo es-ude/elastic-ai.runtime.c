@@ -1,23 +1,23 @@
 #ifndef ELASTIC_AI_RUNTIME_C_TOPICMATCHER_INTERNAL_H
 #define ELASTIC_AI_RUNTIME_C_TOPICMATCHER_INTERNAL_H
 
-static bool TopicMatcherInternalTopicsAreEqual(char *subscribedTopic, char *publishedTopic);
+static bool topicMatcherInternalTopicsAreEqual(char *subscribedTopic, char *publishedTopic);
 
-static bool TopicMatcherInternalSubscribedTopicHasCharactersLeft(char *subscribedTopic,
+static bool topicMatcherInternalSubscribedTopicHasCharactersLeft(char *subscribedTopic,
                                                                  int subscribedIterator);
 
-static bool TopicMatcherInternalMultiLevelWildcardIn(const char *subscribedTopic,
+static bool topicMatcherInternalMultiLevelWildcardIn(const char *subscribedTopic,
                                                      int subscribedIterator);
 
-static bool TopicMatcherInternalCheckForEqualCharacterIn(const char *subscribedTopic,
+static bool topicMatcherInternalCheckForEqualCharacterIn(const char *subscribedTopic,
                                                          const char *publishedTopic,
                                                          int subscribedIterator,
                                                          int publishedIterator);
 
-static bool TopicMatcherInternalCheckForSingleLevelWildcardIn(const char *subscribedTopic,
+static bool topicMatcherInternalCheckForSingleLevelWildcardIn(const char *subscribedTopic,
                                                               int subscribedIterator);
 
-static bool TopicMatcherInternalCheckIfWildcardEndedIn(const char *publishedTopic,
+static bool topicMatcherInternalCheckIfWildcardEndedIn(const char *publishedTopic,
                                                        int publishedIterator);
 
 #endif /* ELASTIC_AI_RUNTIME_C_TOPICMATCHER_INTERNAL_H */
