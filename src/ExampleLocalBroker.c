@@ -18,23 +18,24 @@ void init(char *domain, char *deviceIdentifier) {
     brokerDeviceIdentifier = deviceIdentifier;
 }
 
-void communicationEndpointSetDomain(char *domain) {
+void communicationEndpointSetBrokerDomain(char *domain) {
     free(brokerDomain);
     brokerDomain = malloc(strlen(domain) + 1);
     brokerDomain = domain;
 }
 
-char *communicationEndpointGetDomain() {
+char *communicationEndpointGetBrokerDomain() {
     return brokerDomain;
 }
 
-void communicationEndpointSetDeviceId(char *deviceIdentifier) {
+uint8_t communicationEndpointSetUserConfiguration(char *clientId, char *userId, char *password) {
     free(brokerDeviceIdentifier);
-    brokerDeviceIdentifier = malloc(strlen(deviceIdentifier) + 1);
-    brokerDeviceIdentifier = deviceIdentifier;
+    brokerDeviceIdentifier = malloc(strlen(clientId) + 1);
+    brokerDeviceIdentifier = clientId;
+    return 0x00;
 }
 
-char *communicationEndpointGetDeviceId() {
+char *communicationEndpointGetClientId() {
     return brokerDeviceIdentifier;
 }
 
