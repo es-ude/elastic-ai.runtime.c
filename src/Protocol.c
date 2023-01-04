@@ -1,6 +1,7 @@
 #include "Protocol.h"
 #include "CommunicationEndpoint.h"
 #include "Posting.h"
+#define INCLUDE_PROTOCOL_INTERNAL
 #include "ProtocolInternal.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -10,11 +11,11 @@
 /* region SELF */
 
 void protocolPublishData(char *dataId, char *valueToPublish) {
-    protocolInternPublish(DATA, dataId, valueToPublish);
+    protocolInternPublish(DATA, dataId, valueToPublish, false);
 }
 
 void protocolPublishHeartbeat(char *who) {
-    protocolInternPublish(HEARTBEAT, "", who);
+    protocolInternPublish(HEARTBEAT, "", who, false);
 }
 
 void protocolSubscribeForDataStartRequest(char *dataId, subscriber_t subscriber) {
@@ -39,6 +40,10 @@ void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber) {
 
 void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber) {
     protocolInternUnsubscribe(COMMAND, dataId, subscriber);
+}
+
+void protocolPublishStatus(char *info) {
+    protocolInternPublish(STATUS, "", info, true);
 }
 
 /* endregion SELF */
@@ -89,6 +94,14 @@ void protocolUnsubscribeFromLost(char *twin, subscriber_t subscriber) {
     protocolInternUnsubscribeRemote(twin, LOST, "", subscriber);
 }
 
+void protocolSubscribeForStatus(char *twin, subscriber_t subscriber) {
+    protocolInternSubscribeRemote(twin, STATUS, "", subscriber);
+}
+
+void protocolUnsubscribeFromStatus(char *twin, subscriber_t subscriber) {
+    protocolInternUnsubscribeRemote(twin, STATUS, "", subscriber);
+}
+
 /* endregion REMOTE */
 
 /* region INTERNAL HEADER FUNCTIONS */
@@ -111,9 +124,9 @@ void protocolInternUnsubscribeRemote(char *twin, char *type, char *data, subscri
     communicationEndpointUnsubscribeRemote(result, subscriber);
     free(result);
 }
-void protocolInternPublish(char *type, char *dataId, char *valueToPublish) {
+void protocolInternPublish(char *type, char *dataId, char *valueToPublish, bool retain) {
     char *topic = protocolInternAddType(type, dataId);
-    posting_t posting = (posting_t){.topic = topic, .data = valueToPublish};
+    posting_t posting = (posting_t){.topic = topic, .data = valueToPublish, .retain = retain};
     communicationEndpointPublish(posting);
     free(topic);
 }

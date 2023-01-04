@@ -26,24 +26,25 @@ subscriber_t subscriber = (subscriber_t){.deliver = deliver};
 char *remoteTwin = "remote";
 
 void test_publishData(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/self/DATA/testPubData0", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/self/" DATA "/testPubData0", subscriber);
 
     protocolPublishData("testPubData0", "testData0");
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/self/DATA/testPubData0", subscriber);
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/self/" DATA "/testPubData0",
+                                        subscriber);
 }
 
 void test_subscribeForData(void) {
     protocolSubscribeForData(remoteTwin, "testSubData0", subscriber);
     protocolSubscribeForData(remoteTwin, "testSubData1", subscriber);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote/DATA/testSubData0", .data = "testData0"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/remote/" DATA "/testSubData0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote/DATA/testSubData1", .data = "testData1"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/remote/" DATA "/testSubData1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromData(remoteTwin, "testSubData0", subscriber);
@@ -55,16 +56,16 @@ void test_unsubscribeFromData(void) {
     protocolSubscribeForData(remoteTwin, "testUnsubData1", subscriber);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/remote/DATA/testUnsubData0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/remote/" DATA "/testUnsubData0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/remote/DATA/testUnsubData1", .data = "testData1"});
+        .topic = "eip://uni-due.de/es/remote/" DATA "/testUnsubData1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromData(remoteTwin, "testUnsubData0", subscriber);
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/remote/DATA/testUnsubData0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/remote/" DATA "/testUnsubData0", .data = "testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
@@ -72,12 +73,12 @@ void test_unsubscribeFromData(void) {
 }
 
 void test_publishHeartbeat(void) {
-    communicationEndpointSubscribe("HEART", subscriber);
+    communicationEndpointSubscribe(HEARTBEAT, subscriber);
 
     protocolPublishHeartbeat("testDevice");
     TEST_ASSERT_EQUAL_STRING("testDevice", lastDelivered.data);
 
-    communicationEndpointUnsubscribe("HEART", subscriber);
+    communicationEndpointUnsubscribe(HEARTBEAT, subscriber);
 }
 
 void test_subscribeForHeartbeat(void) {
@@ -85,11 +86,11 @@ void test_subscribeForHeartbeat(void) {
     protocolSubscribeForHeartbeat("remote1", subscriber);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/HEART", .data = "remote0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" HEARTBEAT, .data = "remote0"});
     TEST_ASSERT_EQUAL_STRING("remote0", lastDelivered.data);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote1/HEART", .data = "remote1"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote1/" HEARTBEAT, .data = "remote1"});
     TEST_ASSERT_EQUAL_STRING("remote1", lastDelivered.data);
 
     protocolUnsubscribeFromHeartbeat("remote0", subscriber);
@@ -101,16 +102,16 @@ void test_unsubscribeFromHeartbeat(void) {
     protocolSubscribeForHeartbeat("remote1", subscriber);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/HEART", .data = "remote0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" HEARTBEAT, .data = "remote0"});
     TEST_ASSERT_EQUAL_STRING("remote0", lastDelivered.data);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote1/HEART", .data = "remote1"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote1/" HEARTBEAT, .data = "remote1"});
     TEST_ASSERT_EQUAL_STRING("remote1", lastDelivered.data);
 
     protocolUnsubscribeFromHeartbeat("remote0", subscriber);
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/HEART", .data = "remote0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" HEARTBEAT, .data = "remote0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     TEST_ASSERT_EQUAL_STRING("remote1", lastDelivered.data);
 
@@ -118,12 +119,13 @@ void test_unsubscribeFromHeartbeat(void) {
 }
 
 void test_publishDataStartRequest(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/START/testPubData0", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" START "/testPubData0",
+                                      subscriber);
 
     protocolPublishDataStartRequest("remote", "testPubData0", "testData0");
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/START/testPubData0",
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/" START "/testPubData0",
                                         subscriber);
 }
 
@@ -132,11 +134,11 @@ void test_subscribeForDataStartRequest(void) {
     protocolSubscribeForDataStartRequest("testSubDataStart1", subscriber);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/START/testSubDataStart0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" START "/testSubDataStart0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/START/testSubDataStart1", .data = "testData1"});
+        .topic = "eip://uni-due.de/es/self/" START "/testSubDataStart1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStartRequest("testSubDataStop0", subscriber);
@@ -148,28 +150,30 @@ void test_unsubscribeFromDataStartRequest(void) {
     protocolSubscribeForDataStartRequest("testUnsubDataStart1", subscriber);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/START/testUnsubDataStart0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" START "/testUnsubDataStart0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/START/testUnsubDataStart1", .data = "testData1"});
+        .topic = "eip://uni-due.de/es/self/" START "/testUnsubDataStart1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStartRequest("testUnsubDataStart0", subscriber);
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/START/testUnsubDataStart0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" START "/testUnsubDataStart0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStartRequest("testUnsubDataStart1", subscriber);
 }
 
 void test_publishDataStopRequest(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/STOP/testPubData0", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" STOP "/testPubData0",
+                                      subscriber);
 
     protocolPublishDataStopRequest(remoteTwin, "testPubData0", "testData0");
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/STOP/testPubData0", subscriber);
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/" STOP "/testPubData0",
+                                        subscriber);
 }
 
 void test_subscribeForDataStopRequest(void) {
@@ -177,12 +181,12 @@ void test_subscribeForDataStopRequest(void) {
     protocolSubscribeForDataStopRequest("testSubDataStop1", subscriber);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/STOP/testSubDataStop0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" STOP "/testSubDataStop0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
 
-        .topic = "eip://uni-due.de/es/self/STOP/testSubDataStop1", .data = "testData1"});
+        .topic = "eip://uni-due.de/es/self/" STOP "/testSubDataStop1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStopRequest("testSubDataStop0", subscriber);
@@ -194,24 +198,59 @@ void test_unsubscribeFromDataStopRequest(void) {
     protocolSubscribeForDataStopRequest("testUnsubDataStop1", subscriber);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/STOP/testUnsubDataStop0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" STOP "/testUnsubDataStop0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/STOP/testUnsubDataStop1", .data = "testData1"});
+        .topic = "eip://uni-due.de/es/self/" STOP "/testUnsubDataStop1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStopRequest("testUnsubDataStop0", subscriber);
     communicationEndpointPublishRaw((posting_t){
-        .topic = "eip://uni-due.de/es/self/STOP/testUnsubDataStop0", .data = "testData0"});
+        .topic = "eip://uni-due.de/es/self/" STOP "/testUnsubDataStop0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromDataStopRequest("testUnsubDataStop0", subscriber);
 }
 
+void test_publishStatus(void) {
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/self/" STATUS, subscriber);
+
+    protocolPublishStatus("testStatus0");
+    TEST_ASSERT_EQUAL_STRING("testStatus0", lastDelivered.data);
+
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/self/" STATUS, subscriber);
+}
+
+void test_subscribeForStatus(void) {
+    protocolSubscribeForStatus(remoteTwin, subscriber);
+
+    communicationEndpointPublishRaw(
+        (posting_t){.topic = "eip://uni-due.de/es/remote/" STATUS, .data = "testSubStatus0"});
+    TEST_ASSERT_EQUAL_STRING("testSubStatus0", lastDelivered.data);
+
+    protocolUnsubscribeFromStatus(remoteTwin, subscriber);
+}
+
+void test_unsubscribeFromStatus(void) {
+    protocolSubscribeForStatus(remoteTwin, subscriber);
+
+    communicationEndpointPublishRaw(
+        (posting_t){.topic = "eip://uni-due.de/es/remote/" STATUS, .data = "testUnsubStatus0"});
+    TEST_ASSERT_EQUAL_STRING("testUnsubStatus0", lastDelivered.data);
+
+    protocolUnsubscribeFromStatus(remoteTwin, subscriber);
+    communicationEndpointPublishRaw(
+        (posting_t){.topic = "eip://uni-due.de/es/remote/" STATUS, .data = "testUnsubStatus1"});
+    // Should not have changed as Subscriber is now longer subscribed too topic
+    TEST_ASSERT_EQUAL_STRING("testUnsubStatus0", lastDelivered.data);
+}
+
 void test_publishCommand(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/SET/testPubCmd0", subscriber);
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/SET/testPubCmd1", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubCmd0",
+                                      subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubCmd1",
+                                      subscriber);
 
     protocolPublishCommand("remote", "testPubCmd0", "0");
     TEST_ASSERT_EQUAL_STRING("0", lastDelivered.data);
@@ -219,38 +258,44 @@ void test_publishCommand(void) {
     protocolPublishCommand("remote", "testPubCmd1", "1");
     TEST_ASSERT_EQUAL_STRING("1", lastDelivered.data);
 
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/SET/testPubCmd0", subscriber);
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/SET/testPubCmd1", subscriber);
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubCmd0",
+                                        subscriber);
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubCmd1",
+                                        subscriber);
 }
 
 void test_publishOnCommand(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/SET/testPubOn0", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubOn0",
+                                      subscriber);
 
     protocolPublishOnCommand("remote", "testPubOn0");
     TEST_ASSERT_EQUAL_STRING("1", lastDelivered.data);
 
-    communicationEndpointUnsubscribe("eip://uni-due.de/es/remote/SET/testPubOn0", subscriber);
+    communicationEndpointUnsubscribe("eip://uni-due.de/es/remote/" COMMAND "/testPubOn0",
+                                     subscriber);
 }
 
 void test_publishOffCommand(void) {
-    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/SET/testPubOff0", subscriber);
+    communicationEndpointSubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubOff0",
+                                      subscriber);
 
     protocolPublishOffCommand("remote", "testPubOff0");
     TEST_ASSERT_EQUAL_STRING("0", lastDelivered.data);
 
-    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/SET/testPubOff0", subscriber);
+    communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/remote/" COMMAND "/testPubOff0",
+                                        subscriber);
 }
 
 void test_subscribeForCommand(void) {
     protocolSubscribeForCommand("testCommand0", subscriber);
     protocolSubscribeForCommand("testCommand1", subscriber);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/SET/testCommand0", .data = "testData0"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/" COMMAND "/testCommand0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/SET/testCommand1", .data = "testData1"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/" COMMAND "/testCommand1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromCommand("testCommand0", subscriber);
@@ -261,17 +306,17 @@ void test_unsubscribeFromCommand(void) {
     protocolSubscribeForCommand("testCommand0", subscriber);
     protocolSubscribeForCommand("testCommand1", subscriber);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/SET/testCommand0", .data = "testData0"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/" COMMAND "/testCommand0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/SET/testCommand1", .data = "testData1"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/" COMMAND "/testCommand1", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromCommand("testCommand0", subscriber);
-    communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/self/SET/testCommand0", .data = "testData0"});
+    communicationEndpointPublishRaw((posting_t){
+        .topic = "eip://uni-due.de/es/self/" COMMAND "/testCommand0", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromCommand("testCommand1", subscriber);
@@ -282,11 +327,11 @@ void test_subscribeForLost(void) {
     protocolSubscribeForLost("remote1", subscriber);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/LOST", .data = "testData0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" LOST "", .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote1/LOST", .data = "testData1"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote1/" LOST "", .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromLost("remote0", subscriber);
@@ -298,16 +343,16 @@ void test_unsubscribeFromLost(void) {
     protocolSubscribeForLost("remote1", subscriber);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/LOST", .data = "testData0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" LOST, .data = "testData0"});
     TEST_ASSERT_EQUAL_STRING("testData0", lastDelivered.data);
 
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote1/LOST", .data = "testData1"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote1/" LOST, .data = "testData1"});
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
     protocolUnsubscribeFromLost("remote0", subscriber);
     communicationEndpointPublishRaw(
-        (posting_t){.topic = "eip://uni-due.de/es/remote0/LOST", .data = "testData0"});
+        (posting_t){.topic = "eip://uni-due.de/es/remote0/" LOST, .data = "testData0"});
     // Should not have changed as Subscriber is now longer subscribed too topic: test0
     TEST_ASSERT_EQUAL_STRING("testData1", lastDelivered.data);
 
@@ -332,6 +377,10 @@ int main(void) {
     RUN_TEST(test_publishDataStopRequest);
     RUN_TEST(test_subscribeForDataStopRequest);
     RUN_TEST(test_unsubscribeFromDataStopRequest);
+
+    RUN_TEST(test_publishStatus);
+    RUN_TEST(test_subscribeForStatus);
+    RUN_TEST(test_unsubscribeFromStatus);
 
     RUN_TEST(test_publishCommand);
     RUN_TEST(test_publishOnCommand);
