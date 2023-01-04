@@ -1,9 +1,15 @@
+
+#ifndef INCLUDE_PROTOCOL_INTERNAL
+#warning Internal header file "ProtocolInternal.h" included from elsewhere
+#undef INCLUDE_PROTOCOL_INTERNAL
+#endif
+
 #ifndef ELASTIC_AI_RUNTIME_C_PROTOCOL_INTERNAL_H
 #define ELASTIC_AI_RUNTIME_C_PROTOCOL_INTERNAL_H
 
 #include "Subscriber.h"
 
-void protocolInternPublish(char *type, char *dataId, char *valueToPublish);
+void protocolInternPublish(char *type, char *dataId, char *valueToPublish, bool retain);
 
 void protocolInternSubscribe(char *type, char *data, subscriber_t subscriber);
 

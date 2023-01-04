@@ -9,6 +9,7 @@
 #define COMMAND "SET"
 #define LOST "LOST"
 #define HEARTBEAT "HEART"
+#define STATUS "STATUS"
 
 /* region SELF */
 
@@ -27,6 +28,8 @@ void protocolUnsubscribeFromDataStopRequest(char *dataId, subscriber_t subscribe
 void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber);
 
 void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber);
+
+void protocolPublishStatus(char *info);
 
 /* endregion */
 
@@ -53,6 +56,10 @@ void protocolUnsubscribeFromHeartbeat(char *heartbeatSource, subscriber_t subscr
 void protocolSubscribeForLost(char *twin, subscriber_t subscriber);
 
 void protocolUnsubscribeFromLost(char *twin, subscriber_t subscriber);
+
+void protocolSubscribeForStatus(char *twin, subscriber_t subscriber);
+
+void protocolUnsubscribeFromStatus(char *twin, subscriber_t subscriber);
 
 /* endregion */
 
