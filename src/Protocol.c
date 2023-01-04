@@ -126,7 +126,7 @@ void protocolInternUnsubscribeRemote(char *twin, char *type, char *data, subscri
 }
 void protocolInternPublish(char *type, char *dataId, char *valueToPublish, bool retain) {
     char *topic = protocolInternAddType(type, dataId);
-    posting_t posting = (posting_t){.topic = topic, .data = valueToPublish, .retain=retain};
+    posting_t posting = (posting_t){.topic = topic, .data = valueToPublish, .retain = retain};
     communicationEndpointPublish(posting);
     free(topic);
 }
