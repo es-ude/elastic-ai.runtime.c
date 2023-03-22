@@ -9,7 +9,8 @@
 
 static void addToMessage(char **information, char *informationElement, char *value) {
     if (value > 0) {
-        char *newInfo = malloc(strlen(*information) + strlen(value) + strlen(informationElement) + 3);
+        char *newInfo =
+            malloc(strlen(*information) + strlen(value) + strlen(informationElement) + 3);
         strcpy(newInfo, *information);
         strcat(newInfo, informationElement);
         strcat(newInfo, ":");

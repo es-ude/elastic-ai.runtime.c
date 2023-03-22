@@ -11,9 +11,11 @@ static void protocolInternUnsubscribe(char *type, char *data, subscriber_t subsc
 
 static void protocolInternPublishRemote(char *twin, char *type, char *dataId, char *valueToPublish);
 
-static void protocolInternSubscribeRemote(char *twin, char *type, char *data, subscriber_t subscriber);
+static void protocolInternSubscribeRemote(char *twin, char *type, char *data,
+                                          subscriber_t subscriber);
 
-static void protocolInternUnsubscribeRemote(char *twin, char *type, char *data, subscriber_t subscriber);
+static void protocolInternUnsubscribeRemote(char *twin, char *type, char *data,
+                                            subscriber_t subscriber);
 
 static char *protocolInternAddType(const char *type, const char *data);
 
