@@ -1,6 +1,7 @@
 #ifndef ELASTIC_AI_RUNTIME_C_PROTOCOL_H
 #define ELASTIC_AI_RUNTIME_C_PROTOCOL_H
 
+#include "Status.h"
 #include "Subscriber.h"
 
 #define DATA "DATA"
@@ -10,6 +11,8 @@
 #define LOST "LOST"
 #define HEARTBEAT "HEART"
 #define STATUS "STATUS"
+
+char *getStatusMessage(status_t status);
 
 /* region SELF */
 
@@ -29,7 +32,7 @@ void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber);
 
 void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber);
 
-void protocolPublishStatus(char *info);
+void protocolPublishStatus(status_t status);
 
 /* endregion */
 

@@ -216,8 +216,8 @@ void test_unsubscribeFromDataStopRequest(void) {
 void test_publishStatus(void) {
     communicationEndpointSubscribeRaw("eip://uni-due.de/es/self/" STATUS, subscriber);
 
-    protocolPublishStatus("testStatus0");
-    TEST_ASSERT_EQUAL_STRING("testStatus0", lastDelivered.data);
+    protocolPublishStatus((status_t){.id = "ID", .state = STATUS_STATE_ONLINE});
+    TEST_ASSERT_EQUAL_STRING("ID:ID;STATE:ONLINE;", lastDelivered.data);
 
     communicationEndpointUnsubscribeRaw("eip://uni-due.de/es/self/" STATUS, subscriber);
 }

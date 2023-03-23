@@ -1,12 +1,38 @@
 #include "Protocol.h"
 #include "CommunicationEndpoint.h"
 #include "Posting.h"
-#define INCLUDE_PROTOCOL_INTERNAL
 #include "ProtocolInternal.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static void addToMessage(char **information, char *informationElement, char *value) {
+    if (value > 0) {
+        char *newInfo =
+            malloc(strlen(*information) + strlen(value) + strlen(informationElement) + 3);
+        strcpy(newInfo, *information);
+        strcat(newInfo, informationElement);
+        strcat(newInfo, ":");
+        strcat(newInfo, value);
+        strcat(newInfo, ";");
+        *information = newInfo;
+    }
+}
+
+char *getStatusMessage(status_t status) {
+    char *information = malloc(strlen(status.id) + strlen(STATUS_ID) + 3);
+    strcpy(information, STATUS_ID);
+    strcat(information, ":");
+    strcat(information, status.id);
+    strcat(information, ";");
+
+    addToMessage(&information, STATUS_TYPE, status.type);
+    addToMessage(&information, STATUS_STATE, status.state);
+    addToMessage(&information, STATUS_MEASUREMENTS, status.measurements);
+
+    return information;
+}
 
 /* region SELF */
 
@@ -42,8 +68,8 @@ void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber) {
     protocolInternUnsubscribe(COMMAND, dataId, subscriber);
 }
 
-void protocolPublishStatus(char *info) {
-    protocolInternPublish(STATUS, "", info, true);
+void protocolPublishStatus(status_t status) {
+    protocolInternPublish(STATUS, "", getStatusMessage(status), true);
 }
 
 /* endregion SELF */
