@@ -7,7 +7,8 @@
 #define DATA "DATA"
 #define START "START"
 #define STOP "STOP"
-#define COMMAND "SET"
+#define DO "DO"
+#define DONE "DONE"
 #define LOST "LOST"
 #define HEARTBEAT "HEART"
 #define STATUS "STATUS"
@@ -32,6 +33,8 @@ void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber);
 
 void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber);
 
+void protocolPublishCommandResponse(char *commandId, bool commandExecutionSuccess);
+
 void protocolPublishStatus(status_t status);
 
 /* endregion */
@@ -44,9 +47,9 @@ void protocolPublishDataStopRequest(char *twin, char *dataId, char *receiver);
 
 void protocolPublishCommand(char *twin, char *service, char *cmd);
 
-void protocolPublishOnCommand(char *twin, char *service);
+void protocolSubscribeForCommandResponse(char *twin, char *commandId, subscriber_t subscriber);
 
-void protocolPublishOffCommand(char *twin, char *service);
+void protocolUnsubscribeFromCommandResponse(char *twin, char *commandId, subscriber_t subscriber);
 
 void protocolSubscribeForData(char *twin, char *dataId, subscriber_t subscriber);
 

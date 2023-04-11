@@ -61,11 +61,15 @@ void protocolUnsubscribeFromDataStopRequest(char *dataId, subscriber_t subscribe
 }
 
 void protocolSubscribeForCommand(char *dataId, subscriber_t subscriber) {
-    protocolInternSubscribe(COMMAND, dataId, subscriber);
+    protocolInternSubscribe(DO, dataId, subscriber);
 }
 
 void protocolUnsubscribeFromCommand(char *dataId, subscriber_t subscriber) {
-    protocolInternUnsubscribe(COMMAND, dataId, subscriber);
+    protocolInternUnsubscribe(DO, dataId, subscriber);
+}
+
+void protocolPublishCommandResponse(char *commandId, bool commandExecutionSuccess) {
+    protocolInternPublish(DONE, commandId, commandExecutionSuccess ? "SUCCESS" : "FAIL", false);
 }
 
 void protocolPublishStatus(status_t status) {
@@ -85,15 +89,15 @@ void protocolPublishDataStopRequest(char *twin, char *dataId, char *receiver) {
 }
 
 void protocolPublishCommand(char *twin, char *service, char *cmd) {
-    protocolInternPublishRemote(twin, COMMAND, service, cmd);
+    protocolInternPublishRemote(twin, DO, service, cmd);
 }
 
-void protocolPublishOnCommand(char *twin, char *service) {
-    protocolPublishCommand(twin, service, "1");
+void protocolSubscribeForCommandResponse(char *twin, char *commandId, subscriber_t subscriber) {
+    protocolInternSubscribeRemote(twin, DONE, commandId, subscriber);
 }
 
-void protocolPublishOffCommand(char *twin, char *service) {
-    protocolPublishCommand(twin, service, "0");
+void protocolUnsubscribeFromCommandResponse(char *twin, char *commandId, subscriber_t subscriber) {
+    protocolInternUnsubscribeRemote(twin, DONE, commandId, subscriber);
 }
 
 void protocolSubscribeForData(char *twin, char *dataId, subscriber_t subscriber) {
