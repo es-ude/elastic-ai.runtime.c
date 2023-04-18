@@ -8,7 +8,7 @@ on:
 
 jobs:
   format:
-    uses: ./github/workflows/format.yml
+    uses: ./.github/workflows/format.yml
 
   semantic-release:
     needs: [ format ]
