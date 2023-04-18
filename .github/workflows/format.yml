@@ -5,11 +5,17 @@ name: "Format code"
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
+  test:
+    uses: ./github/workflows/tests.yml
+
   format:
     runs-on: ubuntu-latest
+    needs: [ test ]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -29,7 +35,7 @@ jobs:
       - name: commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "style: apply clang-format"
+          commit_message: "style(clang): apply format"
           commit_user_name: github-actions
           commit_author: github-actions <action@github.com>
           commit_user_email: action@github.com
