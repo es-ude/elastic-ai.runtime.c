@@ -1,4 +1,4 @@
-# Based on https://github.com/marketplace/actions/git-clang-format-action
+# https://github.com/semantic-release/semantic-release
 
 name: "Semantic Release"
 
@@ -10,12 +10,17 @@ jobs:
   format:
     uses: ./.github/workflows/format.yml
 
-  semantic-release:
+  release:
+    name: release
     needs: [ format ]
-    image: node:12-buster-slim
-    stage: release
-    before_script:
-      - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
-      - npm install -g semantic-release @semantic-release/gitlab
-    script:
-      - semantic-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: 18
+      - run: npm ci
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
