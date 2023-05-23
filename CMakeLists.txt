@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.21)
-project("elastic-AI.runtime.c" VERSION 0.0.1 LANGUAGES C)
+project("elastic-AI.runtime.c" LANGUAGES C)
 
 get_directory_property(hasParent PARENT_DIRECTORY)
 
-add_subdirectory(src)
+add_subdirectory(src/topicMatcher)
+add_subdirectory(src/protocol)
 
 if (hasParent)
     include(src/elastic-ai.runtime.cmake)
@@ -12,11 +13,8 @@ if (hasParent)
             topicMatcher
             protocol)
 else ()
-    # Include submodules
-    include(helpers.cmake)
-    fetch_git_submodules()
-
     include(CTest)
+    add_subdirectory(src/exampleLocalBroker)
     add_subdirectory(extern/unity)
     add_subdirectory(test)
 endif ()
