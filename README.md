@@ -1,3 +1,6 @@
+[![Tests](https://github.com/es-ude/elastic-ai.runtime.c/actions/workflows/run_checks.yml/badge.svg)](https://github.com/es-ude/elastic-ai.runtime.c/actions/workflows/run_checks.yml)
+[![Create Release](https://github.com/es-ude/elastic-ai.runtime.c/actions/workflows/push_to_main.yml/badge.svg)](https://github.com/es-ude/elastic-ai.runtime.c/actions/workflows/push_to_main.yml)
+
 # elastic-ai.runtime.c
 
 This repository encapsulates the information about the elastic-ai.runtime protocol in simple C 
