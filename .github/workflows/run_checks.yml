@@ -68,4 +68,5 @@ jobs:
         run: |
           cmake --build build/unit-tests -j 4
       - name: Run Unit-Tests
-        run: ctest --test-dir build/unit-tests/test/unit --output-on-failure
+        run: |
+          ctest --test-dir build/unit-tests/test --output-on-failure
