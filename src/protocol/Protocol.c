@@ -2,13 +2,15 @@
 #include "CommunicationEndpoint.h"
 #include "Posting.h"
 #include "ProtocolInternal.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static void addToMessage(char **information, char *informationElement, char *value) {
-    if (value > 0) {
+static void addToMessage(char **information, char *informationElement, char *value, bool mandatory) {
+    if (value > 0 || mandatory) {
+        if (value == 0) {
+            value = "NULL";
+        }
         char *newInfo =
             malloc(strlen(*information) + strlen(value) + strlen(informationElement) + 3);
         strcpy(newInfo, *information);
@@ -21,15 +23,15 @@ static void addToMessage(char **information, char *informationElement, char *val
 }
 
 char *getStatusMessage(status_t status) {
-    char *information = malloc(strlen(status.id) + strlen(STATUS_ID) + 3);
-    strcpy(information, STATUS_ID);
-    strcat(information, ":");
-    strcat(information, status.id);
-    strcat(information, ";");
+    char *information = "";
 
-    addToMessage(&information, STATUS_TYPE, status.type);
-    addToMessage(&information, STATUS_STATE, status.state);
-    addToMessage(&information, STATUS_MEASUREMENTS, status.measurements);
+    addToMessage(&information, STATUS_ID, status.id, true);
+    addToMessage(&information, STATUS_TYPE, status.type, true);
+    addToMessage(&information, STATUS_STATE, status.state, true);
+
+    addToMessage(&information, STATUS_DATA, status.data, false);
+    addToMessage(&information, STATUS_FPGA, status.fpga, false);
+    addToMessage(&information, STATUS_VERSION, status.version, false);
 
     return information;
 }
