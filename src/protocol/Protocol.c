@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void addToMessage(char **information, char *informationElement, char *value, bool mandatory) {
+static void addToMessage(char **information, char *informationElement, char *value,
+                         bool mandatory) {
     if (value > 0 || mandatory) {
         if (value == 0) {
             value = "NULL";
