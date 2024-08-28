@@ -14,6 +14,8 @@
 #define STATUS_FPGA "FPGA"
 #define STATUS_VERSION "VERSION"
 
+#define STATUS_APPLICATIONS "STORED_APPS"
+
 struct status {
     char *id;
     char *type;
@@ -22,6 +24,8 @@ struct status {
     char *data;
     char *fpga;
     char *version;
+
+    char *storedApplications;
 };
 
 typedef struct status status_t;

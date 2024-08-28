@@ -34,6 +34,8 @@ char *getStatusMessage(status_t status) {
     addToMessage(&information, STATUS_FPGA, status.fpga, false);
     addToMessage(&information, STATUS_VERSION, status.version, false);
 
+    addToMessage(&information, STATUS_APPLICATIONS, status.storedApplications, false);
+
     return information;
 }
 
