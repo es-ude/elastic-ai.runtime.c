@@ -1,6 +1,8 @@
 module.exports = {
   extends : [ '@commitlint/config-conventional' ],
   rules : {
+    'type-empty' : [ 2, "never" ],
+    'type-case' : [ 2, "always", "lower-case" ],
     'type-enum' :
                 [
                   2, "always",
@@ -9,8 +11,9 @@ module.exports = {
                     'wip', 'perf'
                   ]
                 ],
+    'scope-empty' : [ 2, "never" ],
     'scope-case' : [ 2, "always", "kebab-case" ],
-    'scope-enum' : [ 2, "always", [ 'all', 'workflow', 'protocol', 'examples', 'tools' ] ],
+    'scope-enum' : [ 2, "always", [ 'all', 'workflow', 'protocol', 'examples', 'tools', 'readme' ] ],
     'subject-empty' : [ 2, "never" ],
   }
 }
