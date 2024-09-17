@@ -1,42 +1,59 @@
-#include "Protocol.h"
-#include "CommunicationEndpoint.h"
-#include "Posting.h"
-#include "ProtocolInternal.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static void addToMessage(char **information, char *informationElement, char *value,
-                         bool mandatory) {
-    if (value > 0 || mandatory) {
-        if (value == 0) {
-            value = "NULL";
+#include "CommunicationEndpoint.h"
+#include "Posting.h"
+#include "Protocol.h"
+#include "ProtocolInternal.h"
+
+static char *addToStatus(char *current, char *descriptor, char *value, bool mandatory) {
+    if (!mandatory) {
+        if (value == NULL) {
+            return current;
         }
-        char *newInfo =
-            malloc(strlen(*information) + strlen(value) + strlen(informationElement) + 3);
-        strcpy(newInfo, *information);
-        strcat(newInfo, informationElement);
-        strcat(newInfo, ":");
-        strcat(newInfo, value);
-        strcat(newInfo, ";");
-        *information = newInfo;
+        if (strlen(value) == 0) {
+            return current;
+        }
     }
+
+    char *updatedStatus;
+    if (current != NULL) {
+        if (value == NULL || strlen(value) == 0) {
+            updatedStatus =
+                calloc(strlen(current) + strlen(descriptor) + strlen("NULL") + 3, sizeof(char));
+            sprintf(updatedStatus, "%s%s:%s;", current, descriptor, "NULL");
+        } else {
+            updatedStatus =
+                calloc(strlen(current) + strlen(descriptor) + strlen(value) + 3, sizeof(char));
+            sprintf(updatedStatus, "%s%s:%s;", current, descriptor, value);
+        }
+        free(current);
+    } else {
+        if (value == NULL || strlen(value) == 0) {
+            updatedStatus = calloc(strlen(descriptor) + strlen("NULL") + 3, sizeof(char));
+            sprintf(updatedStatus, "%s:%s;", descriptor, "NULL");
+        } else {
+            updatedStatus = calloc(strlen(descriptor) + strlen(value) + 3, sizeof(char));
+            sprintf(updatedStatus, "%s:%s;", descriptor, value);
+        }
+    }
+
+    return updatedStatus;
 }
 
 char *getStatusMessage(status_t status) {
-    char *information = "";
+    char *statusMessage = addToStatus(NULL, STATUS_ID, status.id, true);
+    statusMessage = addToStatus(statusMessage, STATUS_TYPE, status.type, true);
+    statusMessage = addToStatus(statusMessage, STATUS_STATE, status.state, true);
 
-    addToMessage(&information, STATUS_ID, status.id, true);
-    addToMessage(&information, STATUS_TYPE, status.type, true);
-    addToMessage(&information, STATUS_STATE, status.state, true);
+    statusMessage = addToStatus(statusMessage, STATUS_DATA, status.data, false);
+    statusMessage = addToStatus(statusMessage, STATUS_FPGA, status.fpga, false);
+    statusMessage = addToStatus(statusMessage, STATUS_VERSION, status.version, false);
+    statusMessage =
+        addToStatus(statusMessage, STATUS_APPLICATIONS, status.storedApplications, false);
 
-    addToMessage(&information, STATUS_DATA, status.data, false);
-    addToMessage(&information, STATUS_FPGA, status.fpga, false);
-    addToMessage(&information, STATUS_VERSION, status.version, false);
-
-    addToMessage(&information, STATUS_APPLICATIONS, status.storedApplications, false);
-
-    return information;
+    return statusMessage;
 }
 
 /* region SELF */
@@ -78,7 +95,10 @@ void protocolPublishCommandResponse(char *commandId, bool commandExecutionSucces
 }
 
 void protocolPublishStatus(status_t status) {
-    protocolInternPublish(STATUS, "", getStatusMessage(status), true);
+    char *statusMessage = getStatusMessage(status);
+    protocolInternPublish(STATUS, "", statusMessage, true);
+    printf("MSG: %s\n", statusMessage);
+    free(statusMessage);
 }
 
 /* endregion SELF */
@@ -159,9 +179,10 @@ void protocolInternUnsubscribeRemote(char *twin, char *type, char *data, subscri
     communicationEndpointUnsubscribeRemote(result, subscriber);
     free(result);
 }
+
 void protocolInternPublish(char *type, char *dataId, char *valueToPublish, bool retain) {
     char *topic = protocolInternAddType(type, dataId);
-    posting_t posting = (posting_t){.topic = topic, .data = valueToPublish, .retain = retain};
+    posting_t posting = {.topic = topic, .data = valueToPublish, .retain = retain};
     communicationEndpointPublish(posting);
     free(topic);
 }
@@ -169,6 +190,7 @@ void protocolInternPublish(char *type, char *dataId, char *valueToPublish, bool 
 void protocolInternSubscribe(char *type, char *data, subscriber_t subscriber) {
     char *result = protocolInternAddType(type, data);
     communicationEndpointSubscribe(result, subscriber);
+    free(result);
 }
 
 void protocolInternUnsubscribe(char *type, char *data, subscriber_t subscriber) {
@@ -178,31 +200,25 @@ void protocolInternUnsubscribe(char *type, char *data, subscriber_t subscriber) 
 }
 
 char *protocolInternGetTopic(const char *twin, const char *type, const char *data) {
-    int slashNum = 3;
+    size_t length = strlen(twin) + strlen(type) + strlen(data) + 3;
+    char *result = calloc(length, sizeof(char));
     if (strlen(data) == 0) {
-        slashNum--;
+        snprintf(result, length, "%s/%s", twin, type);
+    } else {
+        snprintf(result, length, "%s/%s/%s", twin, type, data);
     }
-    uint16_t length = strlen(twin) + strlen(type) + strlen(data) + slashNum + 1;
-    char *result = malloc(length);
-    snprintf(result, length, "%s/%s", twin, type);
-    if (strlen(data) != 0) {
-        strcat(result, "/");
-        strcat(result, data);
-    }
+
     return result;
 }
 
 char *protocolInternAddType(const char *type, const char *data) {
+    char *fixedTopic = calloc(strlen(type) + strlen(data) + 2, sizeof(char));
     if (strlen(data) == 0) {
-        char *result = malloc(strlen(type) + 1);
-        strcpy(result, type);
-        return result;
+        sprintf(fixedTopic, "%s", type);
+    } else {
+        sprintf(fixedTopic, "%s/%s", type, data);
     }
-    char *result = malloc(strlen(type) + strlen(data) + 2);
-    strcpy(result, type);
-    strcat(result, "/");
-    strcat(result, data);
-    return result;
+    return fixedTopic;
 }
 
 /* endregion INTERNAL HEADER FUNCTIONS */

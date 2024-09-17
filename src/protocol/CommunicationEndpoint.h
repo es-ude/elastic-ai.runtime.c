@@ -96,6 +96,7 @@ void communicationEndpointUnsubscribeRemote(char *topic, subscriber_t subscriber
  * @param topic Topic to unsubscribe
  * @param subscriber Function to be called when message is published to topic
  */
-void communicationEndpointUnsubscribeRaw(char *topic, subscriber_t subscriber);
+void communicationEndpointUnsubscribeRaw(char *topic,
+                                         __attribute__((unused)) subscriber_t subscriber);
 
 #endif /* ELASTIC_AI_RUNTIME_C_COMMUNICATION_ENDPOINT_H */

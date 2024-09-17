@@ -14,10 +14,11 @@
  */
 void init(char *domain, char *deviceIdentifier);
 
+typedef struct subscription subscription_t;
 struct subscription {
     char *topic;
     subscriber_t subscriber;
+    subscription_t *next;
 };
-typedef struct subscription subscription_t;
 
 #endif /* ELASTIC_AI_RUNTIME_C_EXAMPLE_LOCAL_BROKER_H */
