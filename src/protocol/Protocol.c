@@ -97,7 +97,6 @@ void protocolPublishCommandResponse(char *commandId, bool commandExecutionSucces
 void protocolPublishStatus(status_t status) {
     char *statusMessage = getStatusMessage(status);
     protocolInternPublish(STATUS, "", statusMessage, true);
-    printf("MSG: %s\n", statusMessage);
     free(statusMessage);
 }
 
