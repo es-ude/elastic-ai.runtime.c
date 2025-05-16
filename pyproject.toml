@@ -7,6 +7,7 @@ maintainers = [{ name = "David P. Federl", email = "david-peter.federl@uni-due.d
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "logdecorator>=2.5",
     "paho-mqtt>=2.1.0",
 ]
 
@@ -39,7 +40,7 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["Python/elasticai","Python/elasticai-stubs" ,  "Python/mqtt", "Python/mqtt-stubs"]
+packages = ["Python/elasticai"]
 exclude = [
     "*_test.py",
 ]
@@ -48,7 +49,7 @@ exclude = [
 source = "vcs"
 
 [tool.pytest.ini_options]
-testpaths = ["Python/elasticai/", "Python/mqtt/", "Python/tests/"]
+testpaths = ["Python/elasticai/", "Python/tests/"]
 python_files = ["*_test.py"]
 addopts = "--import-mode=importlib"
 

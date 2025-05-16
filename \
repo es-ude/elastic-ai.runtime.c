@@ -23,11 +23,11 @@ class DeviceState(str, Enum):
 class Protocol:
     """Elastic-AI protocol implementation."""
 
-    __handler: IPubSubClient
-    __device_id: str
-    __device_type: DeviceType
-    __base_url: str
-    __topics: dict[str, str]
+    _handler: IPubSubClient
+    _device_id: str
+    _device_type: DeviceType
+    _base_url: str
+    _topics: dict[str, str]
 
     def __init__(
         self,
@@ -47,11 +47,11 @@ class Protocol:
         Returns:
             None
         """
-        self.__handler = handler
-        self.__device_id = device_id.strip().removeprefix("/").removeprefix("/").strip()
-        self.__device_type = device_type
-        self.__base_url = base_url.lstrip().removesuffix("/")
-        self.__topics: dict[str, str] = {
+        self._handler = handler
+        self._device_id = device_id.strip().removeprefix("/").removeprefix("/").strip()
+        self._device_type = device_type
+        self._base_url = base_url.lstrip().removesuffix("/")
+        self._topics: dict[str, str] = {
             "status": "STATUS",
             "data": "DATA",
             "start": "START",
@@ -66,7 +66,7 @@ class Protocol:
         Returns:
             str: The device ID.
         """
-        return self.__device_id
+        return self._device_id
 
     def get_device_type(self) -> DeviceType:
         """Returns the type of the device.
@@ -74,7 +74,7 @@ class Protocol:
         Returns:
             DeviceType: The type of the device.
         """
-        return self.__device_type
+        return self._device_type
 
     def get_base_url(self) -> str:
         """Returns the base URL.
@@ -82,7 +82,7 @@ class Protocol:
         Returns:
             str: The base URL.
         """
-        return self.__base_url
+        return self._base_url
 
     # region PUBLISH
 

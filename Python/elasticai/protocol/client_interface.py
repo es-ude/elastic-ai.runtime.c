@@ -1,44 +1,38 @@
 """Interface for the pub-sub-system used for the elastic-AI protocol."""
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Callable
 
 
-class PubSubInterface(metaclass=ABCMeta):
+class IPubSubClient(ABC):
     """Interface for the pub-sub-system used for the elastic-AI protocol."""
 
-    @classmethod
-    def __subclasshook__(cls, subclass: type) -> bool:
-        """Subclass hook."""
-        return (
-            hasattr(subclass, "get_client_id")
-            and callable(subclass.get_client_id)
-            and hasattr(subclass, "publish")
-            and callable(subclass.publish)
-            and hasattr(subclass, "subscribe")
-            and callable(subclass.subscribe)
-            and hasattr(subclass, "unsubscribe")
-            and callable(subclass.unsubscribe)
-        ) or NotImplemented
+    @abstractmethod
+    def set_lwt(self, topic: str, payload: str) -> None:
+        """Set LWT message for client.
+
+        Args:
+            topic (str): topic to publish lwt
+            payload (str|byte|bytearray|None): message to publish as lwt
+
+        Returns:
+            None
+        """
+        pass
 
     @abstractmethod
-    def get_client_id(self) -> str:
-        """Get the client ID."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def publish(self, topic: str, message: str, retain: bool = False) -> None:
+    def publish(self, topic: str, payload: str, retain: bool = False) -> None:
         """Publish a message to the defined topic.
 
         Args:
             topic(str): topic to publish to
-            message(str): message to publish
+            payload(str): message to publish
             retain (bool): if message is retained
 
         Returns:
             None
         """
-        raise NotImplementedError
+        pass
 
     @abstractmethod
     def subscribe(self, topic: str, handler: Callable[[str, str], None]) -> None:
@@ -51,7 +45,7 @@ class PubSubInterface(metaclass=ABCMeta):
         Returns:
             None
         """
-        raise NotImplementedError
+        pass
 
     @abstractmethod
     def unsubscribe(self, topic: str) -> None:
@@ -63,4 +57,4 @@ class PubSubInterface(metaclass=ABCMeta):
         Returns:
             None
         """
-        raise NotImplementedError
+        pass
